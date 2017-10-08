@@ -1,4 +1,4 @@
-﻿using MasteringEFCore.Transactions.Final.Core.Commands.Posts;
+﻿using MasteringEFCore.Transactions.Final.Core.Commands.Files;
 using MasteringEFCore.Transactions.Final.Data;
 using MasteringEFCore.Transactions.Final.Helpers;
 using MasteringEFCore.Transactions.Final.Models;
@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MasteringEFCore.Transactions.Final.Infrastructure.Commands.Files
 {
-    public class UpdateFileCommand : CommandFileBase, ICreatePostCommand<int>
+    public class UpdateFileCommand : CommandFileBase, ICreateFileCommand<int>
     {
         private readonly DbTransaction _dbTransaction;
         public UpdateFileCommand(BlogFilesContext context) : base(context)

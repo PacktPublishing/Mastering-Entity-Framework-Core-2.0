@@ -1,4 +1,4 @@
-﻿using MasteringEFCore.Transactions.Final.Core.Commands.Posts;
+﻿using MasteringEFCore.Transactions.Final.Core.Commands.Files;
 using MasteringEFCore.Transactions.Final.Helpers;
 using MasteringEFCore.Transactions.Final.Models;
 using System;
@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MasteringEFCore.Transactions.Final.Infrastructure.Commands.Files
 {
-    public class CreateFileCommand : CommandFileBase, ICreatePostCommand<int>
+    public class CreateFileCommand : CommandFileBase, ICreateFileCommand<int>
     {
         private readonly DbTransaction _dbTransaction;
         public CreateFileCommand(BlogFilesContext context) : base(context)
