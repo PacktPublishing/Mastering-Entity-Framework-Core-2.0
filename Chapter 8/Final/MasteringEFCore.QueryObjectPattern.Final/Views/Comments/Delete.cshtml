@@ -1,0 +1,53 @@
+@model MasteringEFCore.QueryObjectPattern.Final.Models.Comment
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Comments</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <input type="hidden" asp-for="Id" />
+        <dt>
+            @Html.DisplayNameFor(model => model.Content)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Content)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CommentedAt)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CommentedAt)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Person)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Person.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Post)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Post.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.User)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.Id)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </form>
+</div>

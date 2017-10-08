@@ -1,0 +1,66 @@
+@model MasteringEFCore.RawSql.Starter.Models.Address
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Address</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FlatHouseInfo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FlatHouseInfo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.StreetName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StreetName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Locality)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Locality)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.City)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.City)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.State)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.State)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Country)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Country)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LatitudeLongitude)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LatitudeLongitude)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.User)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.Id)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
