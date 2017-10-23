@@ -14,15 +14,8 @@ namespace MasteringEFCore.Transactions.Final.Infrastructure.Commands.Files
 {
     public class UpdateFileCommand : CommandFileBase, ICreateFileCommand<int>
     {
-        private readonly DbTransaction _dbTransaction;
         public UpdateFileCommand(BlogFilesContext context) : base(context)
         {
-        }
-
-        public UpdateFileCommand(BlogFilesContext context, DbTransaction dbTransaction) 
-            : this(context)
-        {
-            _dbTransaction = dbTransaction;
         }
 
         public Guid Id { get; set; }
@@ -35,49 +28,14 @@ namespace MasteringEFCore.Transactions.Final.Infrastructure.Commands.Files
 
         public int Handle()
         {
-            int returnValue = 0;
-            using (var transaction = _dbTransaction != null
-                ? Context.Database.UseTransaction(_dbTransaction)
-                : Context.Database.BeginTransaction())
-            {
-                try
-                {
-                    UpdateFile();
-                    returnValue = Context.SaveChanges();
-                    transaction.Commit();
-                }
-                catch (Exception exception)
-                {
-                    transaction.Rollback();
-                    ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
-                }
-            }
-
-            return returnValue;
+            UpdateFile();
+            return Context.SaveChanges();
         }
 
         public async Task<int> HandleAsync()
         {
-            int returnValue = 0;
-            using (var transaction = _dbTransaction != null
-                ? Context.Database.UseTransaction(_dbTransaction)
-                : Context.Database.BeginTransaction())
-            {
-                try
-                {
-                    UpdateFile();
-                    returnValue = await Context.SaveChangesAsync();
-
-                    transaction.Commit();
-                }
-                catch (Exception exception)
-                {
-                    transaction.Rollback();
-                    ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
-                }
-            }
-
-            return returnValue;
+            UpdateFile();
+            return await Context.SaveChangesAsync();
         }
 
         private void UpdateFile()

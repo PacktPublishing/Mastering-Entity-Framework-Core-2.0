@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Http;
 using MasteringEFCore.Transactions.Final.Infrastructure.Commands.Files;
 using MasteringEFCore.Transactions.Final.Infrastructure.Commands;
 using System.Runtime.ExceptionServices;
+using MasteringEFCore.Transactions.Final.Infrastructure.Queries.Files;
 
 namespace MasteringEFCore.Transactions.Final.Controllers
 {
@@ -41,11 +42,24 @@ namespace MasteringEFCore.Transactions.Final.Controllers
         // GET: Posts
         public async Task<IActionResult> Index()
         {
-            return View(await _postRepository.GetAsync(
+            var posts = await _postRepository.GetAsync(
                 new GetAllPostsQuery(_context)
                 {
                     IncludeData = true
-                }));
+                });
+            posts.ToList().ForEach(item =>
+            {
+                var file = _fileRepository.GetSingle(
+                new GetFileByIdQuery(_filesContext)
+                {
+                    Id = item.FileId
+                });
+                if (file != null)
+                {
+                    item.FileName = file.FileName;
+                }
+            });
+            return View(posts);
         }
 
         [HttpGet]
@@ -144,6 +158,19 @@ namespace MasteringEFCore.Transactions.Final.Controllers
                 return NotFound();
             }
 
+            if (!post.FileId.Equals(Guid.Empty))
+            {
+                var file = await _fileRepository.GetSingleAsync(
+                    new GetFileByIdQuery(_filesContext)
+                    {
+                        Id = post.FileId
+                    });
+                if (file != null)
+                {
+                    post.FileName = file.FileName;
+                }
+            }
+
             return View(post);
         }
 
@@ -178,7 +205,7 @@ namespace MasteringEFCore.Transactions.Final.Controllers
                     {
                         Id = Guid.NewGuid(),
                         Name = headerImage.Name,
-                        FileName = headerImage.FileName,
+                        FileName = Path.GetFileName(headerImage.FileName),
                         Content = ms.ToArray(),
                         Length = headerImage.Length,
                         ContentType = headerImage.ContentType
@@ -188,18 +215,21 @@ namespace MasteringEFCore.Transactions.Final.Controllers
                 var transactions = new TransactionScope();
                 try
                 {
-                    transactions.Transactions.Add(_filesContext.Database.BeginTransaction());
-                    await _fileRepository.ExecuteAsync(
-                        new CreateFileCommand(_filesContext)
-                        {
-                            Content = file.Content,
-                            ContentDisposition = file.ContentDisposition,
-                            ContentType = file.ContentType,
-                            FileName = file.FileName,
-                            Id = file.Id,
-                            Length = file.Length,
-                            Name = file.Name
-                        });
+                    if (file != null)
+                    {
+                        transactions.Transactions.Add(_filesContext.Database.BeginTransaction());
+                        await _fileRepository.ExecuteAsync(
+                            new CreateFileCommand(_filesContext)
+                            {
+                                Content = file.Content,
+                                ContentDisposition = file.ContentDisposition,
+                                ContentType = file.ContentType,
+                                FileName = file.FileName,
+                                Id = file.Id,
+                                Length = file.Length,
+                                Name = file.Name
+                            });
+                    }
 
                     transactions.Transactions.Add(_context.Database.BeginTransaction());
                     await _postRepository.ExecuteAsync(
@@ -249,6 +279,19 @@ namespace MasteringEFCore.Transactions.Final.Controllers
             {
                 return NotFound();
             }
+            if (!post.FileId.Equals(Guid.Empty))
+            {
+                var file = await _fileRepository.GetSingleAsync(
+                    new GetFileByIdQuery(_filesContext)
+                    {
+                        Id = post.FileId
+                    });
+                if (file != null)
+                {
+                    post.FileName = file.FileName;
+                }
+            }
+
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", post.AuthorId);
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Url", post.BlogId);
             ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Id", post.CategoryId);
@@ -284,27 +327,54 @@ namespace MasteringEFCore.Transactions.Final.Controllers
                         {
                             Id = post.FileId,
                             Name = headerImage.Name,
-                            FileName = headerImage.FileName,
+                            FileName = Path.GetFileName(headerImage.FileName),
                             Content = ms.ToArray(),
                             Length = headerImage.Length,
                             ContentType = headerImage.ContentType
                         };
                     }
 
-                    await _postRepository.ExecuteAsync(
-                        new UpdatePostCommand(_context, _filesContext)
+                    var transactions = new TransactionScope();
+                    try
+                    {
+                        if (file != null)
                         {
-                            Id = post.Id,
-                            Title = post.Title,
-                            Summary = post.Summary,
-                            Content = post.Content,
-                            PublishedDateTime = post.PublishedDateTime,
-                            AuthorId = post.AuthorId,
-                            BlogId = post.BlogId,
-                            CategoryId = post.CategoryId,
-                            TagIds = post.TagIds,
-                            File = file
-                        });
+                            transactions.Transactions.Add(_filesContext.Database.BeginTransaction());
+                            await _fileRepository.ExecuteAsync(
+                                new UpdateFileCommand(_filesContext)
+                                {
+                                    Content = file.Content,
+                                    ContentDisposition = file.ContentDisposition,
+                                    ContentType = file.ContentType,
+                                    FileName = file.FileName,
+                                    Id = file.Id,
+                                    Length = file.Length,
+                                    Name = file.Name
+                                });
+                        }
+
+                        transactions.Transactions.Add(_context.Database.BeginTransaction());
+                        await _postRepository.ExecuteAsync(
+                            new UpdatePostCommand(_context)
+                            {
+                                Id = post.Id,
+                                Title = post.Title,
+                                Summary = post.Summary,
+                                Content = post.Content,
+                                PublishedDateTime = post.PublishedDateTime,
+                                AuthorId = post.AuthorId,
+                                BlogId = post.BlogId,
+                                CategoryId = post.CategoryId,
+                                TagIds = post.TagIds,
+                                FileId = file.Id
+                            });
+                        transactions.Commit();
+                    }
+                    catch (Exception exception)
+                    {
+                        transactions.Rollback();
+                        ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -345,19 +415,55 @@ namespace MasteringEFCore.Transactions.Final.Controllers
                 return NotFound();
             }
 
+            if (!post.FileId.Equals(Guid.Empty))
+            {
+                var file = await _fileRepository.GetSingleAsync(
+                    new GetFileByIdQuery(_filesContext)
+                    {
+                        Id = post.FileId
+                    });
+                if (file != null)
+                {
+                    post.FileName = file.FileName;
+                }
+            }
+
             return View(post);
         }
 
         // POST: Posts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, Guid fileId)
         {
-            await _postRepository.ExecuteAsync(
-                new DeletePostCommand(_context)
+            var transactions = new TransactionScope();
+            try
+            {
+                if (!fileId.Equals(Guid.Empty))
                 {
-                    Id = id
-                });
+
+                    transactions.Transactions.Add(_filesContext.Database.BeginTransaction());
+                    await _fileRepository.ExecuteAsync(
+                        new DeleteFileCommand(_filesContext)
+                        {
+                            Id = fileId
+                        });
+                }
+
+                transactions.Transactions.Add(_context.Database.BeginTransaction());
+                await _postRepository.ExecuteAsync(
+                    new DeletePostCommand(_context)
+                    {
+                        Id = id
+                    });
+                transactions.Commit();
+            }
+            catch (Exception exception)
+            {
+                transactions.Rollback();
+                ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
+            }
+
             return RedirectToAction("Index");
         }
 

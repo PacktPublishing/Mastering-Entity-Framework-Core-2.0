@@ -33,6 +33,24 @@
                 <span asp-validation-for="Summary" class="text-danger"></span>
             </div>
         </div>
+        @if (Model.FileId.Equals(Guid.Empty))
+        {
+            <div class="form-group">
+                <label class="col-md-2 control-label">Header Image</label>
+                <div class="col-md-10">
+                    <input type="file" id="headerImage" name="headerImage" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="form-group">
+                <label class="col-md-2 control-label">Header Image</label>
+                <div class="col-md-10">
+                    <a asp-controller="Files" asp-action="Get" asp-route-id="@Model.FileId">@Model.FileName</a>
+                </div>
+            </div>
+        }
         <div class="form-group">
             <label asp-for="PublishedDateTime" class="col-md-2 control-label"></label>
             <div class="col-md-10">

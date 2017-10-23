@@ -14,15 +14,8 @@ namespace MasteringEFCore.Transactions.Final.Infrastructure.Commands.Posts
 {
     public class DeletePostCommand : CommandBase, ICreatePostCommand<int>
     {
-        private readonly BlogFilesContext _blogFilesContext;
         public DeletePostCommand(BlogContext context) : base(context)
         {
-        }
-
-        public DeletePostCommand(BlogContext context, BlogFilesContext blogFilesContext) 
-            : this(context)
-        {
-            _blogFilesContext = blogFilesContext;
         }
 
         public int Id { get; set; }
@@ -32,32 +25,17 @@ namespace MasteringEFCore.Transactions.Final.Infrastructure.Commands.Posts
         public int Handle()
         {
             int returnValue = 0;
-            using (var transaction = Context.Database.BeginTransaction())
+            try
             {
-                try
-                {
-                    DeleteFileCommand deleteFileCommand =
-                        new DeleteFileCommand(_blogFilesContext,
-                            transaction.GetDbTransaction())
-                        {
-                            Id = FileId
-                        };
+                DeletePost();
+                returnValue = Context.SaveChanges();
 
-                    returnValue = deleteFileCommand.Handle();
-
-                    DeletePost();
-                    returnValue = Context.SaveChanges();
-
-                    DeleteTag();
-                    returnValue = Context.SaveChanges();
-
-                    transaction.Commit();
-                }
-                catch (Exception exception)
-                {
-                    transaction.Rollback();
-                    ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
-                }
+                DeleteTag();
+                returnValue = Context.SaveChanges();
+            }
+            catch (Exception exception)
+            {
+                ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
             }
 
             return returnValue;
@@ -66,32 +44,17 @@ namespace MasteringEFCore.Transactions.Final.Infrastructure.Commands.Posts
         public async Task<int> HandleAsync()
         {
             int returnValue = 0;
-            using (var transaction = Context.Database.BeginTransaction())
+            try
             {
-                try
-                {
-                    DeleteFileCommand deleteFileCommand =
-                        new DeleteFileCommand(_blogFilesContext,
-                            transaction.GetDbTransaction())
-                        {
-                            Id = FileId
-                        };
+                DeletePost();
+                returnValue = await Context.SaveChangesAsync();
 
-                    returnValue = await deleteFileCommand.HandleAsync();
-
-                    DeletePost();
-                    returnValue = await Context.SaveChangesAsync();
-
-                    DeleteTag();
-                    returnValue = await Context.SaveChangesAsync();
-
-                    transaction.Commit();
-                }
-                catch (Exception exception)
-                {
-                    transaction.Rollback();
-                    ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
-                }
+                DeleteTag();
+                returnValue = await Context.SaveChangesAsync();
+            }
+            catch (Exception exception)
+            {
+                ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
             }
 
             return returnValue;

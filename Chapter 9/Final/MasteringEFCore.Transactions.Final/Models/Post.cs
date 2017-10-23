@@ -51,6 +51,9 @@ namespace MasteringEFCore.Transactions.Final.Models
         public ICollection<int> TagIds { get; set; }
         [NotMapped]
         public string TagNames { get; set; }
+        [Display(Name = "Image Name")]
         public Guid FileId { get; set; }
+        [NotMapped]
+        public string FileName { get; set; }
     }
 }

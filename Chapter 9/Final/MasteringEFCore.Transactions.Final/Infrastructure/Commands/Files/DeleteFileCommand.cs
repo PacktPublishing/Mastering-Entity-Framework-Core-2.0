@@ -14,15 +14,8 @@ namespace MasteringEFCore.Transactions.Final.Infrastructure.Commands.Files
 {
     public class DeleteFileCommand : CommandFileBase, ICreateFileCommand<int>
     {
-        private readonly DbTransaction _dbTransaction;
         public DeleteFileCommand(BlogFilesContext context) : base(context)
         {
-        }
-
-        public DeleteFileCommand(BlogFilesContext context, DbTransaction dbTransaction) 
-            : this(context)
-        {
-            _dbTransaction = dbTransaction;
         }
 
         public Guid Id { get; set; }
@@ -30,22 +23,14 @@ namespace MasteringEFCore.Transactions.Final.Infrastructure.Commands.Files
         public int Handle()
         {
             int returnValue = 0;
-            using (var transaction = _dbTransaction != null
-                ? Context.Database.UseTransaction(_dbTransaction)
-                : Context.Database.BeginTransaction())
+            try
             {
-                try
-                {
-                    DeleteFile();
-                    returnValue = Context.SaveChanges();
-
-                    transaction.Commit();
-                }
-                catch (Exception exception)
-                {
-                    transaction.Rollback();
-                    ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
-                }
+                DeleteFile();
+                returnValue = Context.SaveChanges();
+            }
+            catch (Exception exception)
+            {
+                ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
             }
 
             return returnValue;
@@ -54,22 +39,14 @@ namespace MasteringEFCore.Transactions.Final.Infrastructure.Commands.Files
         public async Task<int> HandleAsync()
         {
             int returnValue = 0;
-            using (var transaction = _dbTransaction != null
-                ? Context.Database.UseTransaction(_dbTransaction)
-                : Context.Database.BeginTransaction())
+            try
             {
-                try
-                {
-                    DeleteFile();
-                    returnValue = await Context.SaveChangesAsync();
-
-                    transaction.Commit();
-                }
-                catch (Exception exception)
-                {
-                    transaction.Rollback();
-                    ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
-                }
+                DeleteFile();
+                returnValue = await Context.SaveChangesAsync();
+            }
+            catch (Exception exception)
+            {
+                ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
             }
 
             return returnValue;

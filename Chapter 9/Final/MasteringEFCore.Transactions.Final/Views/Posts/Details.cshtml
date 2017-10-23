@@ -82,6 +82,15 @@
         <dd>
             @Html.DisplayFor(model => model.TagNames)
         </dd>
+        @if (!Model.FileId.Equals(Guid.Empty))
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.FileId)
+            </dt>
+            <dd>
+                <a asp-controller="Files" asp-action="Get" asp-route-id="@Model.FileId">@Model.FileName</a>
+            </dd>
+        }
     </dl>
 </div>
 <div>
