@@ -15,6 +15,9 @@ using MasteringEFCore.Transactions.Final.Infrastructure.Queries.Posts;
 using ExpressionPostQueries = MasteringEFCore.Transactions.Final.Infrastructure.QueriesWithExpressions.Posts;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using MasteringEFCore.Transactions.Final.Infrastructure.Commands.Files;
+using MasteringEFCore.Transactions.Final.Infrastructure.Commands;
+using System.Runtime.ExceptionServices;
 
 namespace MasteringEFCore.Transactions.Final.Controllers
 {
@@ -24,12 +27,15 @@ namespace MasteringEFCore.Transactions.Final.Controllers
         private readonly BlogContext _context;
         private readonly BlogFilesContext _filesContext;
         private readonly IPostRepository _postRepository;
+        private readonly IFileRepository _fileRepository;
 
-        public PostsController(BlogContext context, BlogFilesContext filesContext, IPostRepository repository)
+        public PostsController(BlogContext context, BlogFilesContext filesContext, 
+            IPostRepository repository, IFileRepository fileRepository)
         {
             _context = context;
             _filesContext = filesContext;
             _postRepository = repository;
+            _fileRepository = fileRepository;
         }
 
         // GET: Posts
@@ -179,19 +185,43 @@ namespace MasteringEFCore.Transactions.Final.Controllers
                     };
                 }
 
-                await _postRepository.ExecuteAsync(
-                    new CreatePostCommand(_context, _filesContext)
-                    {
-                        Title = post.Title,
-                        Summary = post.Summary,
-                        Content = post.Content,
-                        PublishedDateTime = post.PublishedDateTime,
-                        AuthorId = post.AuthorId,
-                        BlogId = post.BlogId,
-                        CategoryId = post.CategoryId,
-                        TagIds = post.TagIds,
-                        File = file
-                    });
+                var transactions = new TransactionScope();
+                try
+                {
+                    transactions.Transactions.Add(_filesContext.Database.BeginTransaction());
+                    await _fileRepository.ExecuteAsync(
+                        new CreateFileCommand(_filesContext)
+                        {
+                            Content = file.Content,
+                            ContentDisposition = file.ContentDisposition,
+                            ContentType = file.ContentType,
+                            FileName = file.FileName,
+                            Id = file.Id,
+                            Length = file.Length,
+                            Name = file.Name
+                        });
+
+                    transactions.Transactions.Add(_context.Database.BeginTransaction());
+                    await _postRepository.ExecuteAsync(
+                        new CreatePostCommand(_context)
+                        {
+                            Title = post.Title,
+                            Summary = post.Summary,
+                            Content = post.Content,
+                            PublishedDateTime = post.PublishedDateTime,
+                            AuthorId = post.AuthorId,
+                            BlogId = post.BlogId,
+                            CategoryId = post.CategoryId,
+                            TagIds = post.TagIds,
+                            FileId = file.Id
+                        });
+                    transactions.Commit();
+                }
+                catch (Exception exception)
+                {
+                    transactions.Rollback();
+                    ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
+                }
                 return RedirectToAction("Index");
             }
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", post.AuthorId);

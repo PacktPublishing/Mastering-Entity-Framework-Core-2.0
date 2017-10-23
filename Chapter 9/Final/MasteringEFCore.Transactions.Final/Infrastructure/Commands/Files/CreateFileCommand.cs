@@ -14,15 +14,8 @@ namespace MasteringEFCore.Transactions.Final.Infrastructure.Commands.Files
 {
     public class CreateFileCommand : CommandFileBase, ICreateFileCommand<int>
     {
-        private readonly DbTransaction _dbTransaction;
         public CreateFileCommand(BlogFilesContext context) : base(context)
         {
-        }
-
-        public CreateFileCommand(BlogFilesContext context, DbTransaction dbTransaction) 
-            : this(context)
-        {
-            _dbTransaction = dbTransaction;
         }
 
         public Guid Id { get; set; }
@@ -35,31 +28,16 @@ namespace MasteringEFCore.Transactions.Final.Infrastructure.Commands.Files
 
         public int Handle()
         {
-            int returnValue = 0;
-            using (var transaction = _dbTransaction != null 
-                ? Context.Database.UseTransaction(_dbTransaction)
-                : Context.Database.BeginTransaction())
-            {
-                try
-                {
-                    AddFile();
-                    returnValue = Context.SaveChanges();
-                    transaction.Commit();
-                }
-                catch (Exception exception)
-                {
-                    transaction.Rollback();
-                    ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
-                }
-            }
-            return returnValue;
+            AddFile();
+            return Context.SaveChanges();
         }
 
         private void AddFile()
         {
+            Id = Id.Equals(Guid.Empty) ? Guid.NewGuid() : Id;
             File file = new File()
             {
-                Id = Guid.NewGuid(),
+                Id = Id,
                 Name = Name,
                 FileName = FileName,
                 Content = Content,
@@ -72,24 +50,8 @@ namespace MasteringEFCore.Transactions.Final.Infrastructure.Commands.Files
 
         public async Task<int> HandleAsync()
         {
-            int returnValue = 0;
-            using (var transaction = _dbTransaction != null
-                ? Context.Database.UseTransaction(_dbTransaction)
-                : Context.Database.BeginTransaction())
-            {
-                try
-                {
-                    AddFile();
-                    returnValue = await Context.SaveChangesAsync();
-                    transaction.Commit();
-                }
-                catch (Exception exception)
-                {
-                    transaction.Rollback();
-                    ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
-                }
-            }
-            return returnValue;
+            AddFile();
+            return await Context.SaveChangesAsync();
         }
     }
 }

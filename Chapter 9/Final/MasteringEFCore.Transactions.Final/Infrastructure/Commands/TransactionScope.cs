@@ -15,7 +15,7 @@ namespace MasteringEFCore.Transactions.Final.Infrastructure.Commands
         private bool disposed = false;
         public TransactionScope()
         {
-            Transactions = new List<DbTransaction>();
+            Transactions = new List<IDbContextTransaction>();
         }
 
         ~TransactionScope()
@@ -23,7 +23,7 @@ namespace MasteringEFCore.Transactions.Final.Infrastructure.Commands
             Dispose(false);
         }
 
-        public List<DbTransaction> Transactions { get; set; }
+        public List<IDbContextTransaction> Transactions { get; set; }
 
         public void Commit()
         {
