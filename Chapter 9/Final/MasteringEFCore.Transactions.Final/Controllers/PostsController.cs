@@ -23,6 +23,7 @@ using MasteringEFCore.Transactions.Final.Infrastructure.Queries.Files;
 namespace MasteringEFCore.Transactions.Final.Controllers
 {
     //[Authorize]
+    [Route("Admin/Posts")]
     public class PostsController : Controller
     {
         private readonly BlogContext _context;
@@ -60,6 +61,19 @@ namespace MasteringEFCore.Transactions.Final.Controllers
                 }
             });
             return View(posts);
+        }
+
+        [Route("~/blog")]
+        public async Task<IActionResult> GetPostsBlogHome(int pageNumber, int pageCount)
+        {
+            var results = await _postRepository.GetAsync(
+                new GetPaginatedPostQuery(_context)
+                {
+                    IncludeData = true,
+                    PageCount = pageCount,
+                    PageNumber = pageNumber
+                });
+            return View(results);
         }
 
         [HttpGet]
@@ -141,6 +155,7 @@ namespace MasteringEFCore.Transactions.Final.Controllers
             return Ok(results);
         }
 
+        [Route("~/Posts/Display")]
         public async Task<IActionResult> Display(string id)
         {
             var url = id;

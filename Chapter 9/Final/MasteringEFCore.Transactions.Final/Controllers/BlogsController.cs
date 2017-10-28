@@ -14,6 +14,7 @@ using MasteringEFCore.Transactions.Final.Extensions;
 namespace MasteringEFCore.Transactions.Final.Controllers
 {
     //[Authorize]
+    [Route("Admin/Blogs")]
     public class BlogsController : Controller
     {
         private readonly BlogContext _context;
@@ -29,7 +30,7 @@ namespace MasteringEFCore.Transactions.Final.Controllers
             //return View(await _context.Blogs.FromSql("Select * from dbo.Blog").ToListAsync());
             return View(await _context.Blogs.FromSql("Select [Id],[Title],[Subtitle],[Description],[Url] from dbo.Blog").ToListAsync());
         }
-
+        
         public async Task<IActionResult> LatestBlogs()
         {
             //return View("Index", await _context.Blogs.FromSql("EXEC [dbo].[GetLatestBlogs]").ToListAsync());

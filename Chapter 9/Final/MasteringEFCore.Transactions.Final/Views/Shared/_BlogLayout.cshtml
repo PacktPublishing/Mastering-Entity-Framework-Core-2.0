@@ -1,0 +1,58 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+@inject IAuthorizationService AuthorizationService
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    <environment names="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/blog.css" />
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/blog.min.css" asp-append-version="true" />
+    </environment>
+    @Html.Raw(JavaScriptSnippet.FullScript)
+</head>
+<body>
+    <div>
+        <div class="blog-masthead">
+            <div class="container">
+                <nav class="blog-nav">
+                    <a class="blog-nav-item active" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    <a class="blog-nav-item" href="#">Admin
+                        <ul class="dropdown-menu">
+                            <li><a asp-area="" asp-controller="People" asp-action="Index">People</a></li>
+                            <li><a asp-area="" asp-controller="Users" asp-action="Index">Users</a></li>
+                            <li><a asp-area="" asp-controller="Addresses" asp-action="Index">Addresses</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a asp-area="" asp-controller="Blogs" asp-action="Index">Blogs</a></li>
+                            <li><a asp-area="" asp-controller="Posts" asp-action="Index">Posts</a></li>
+                            <li><a asp-area="" asp-controller="Comments" asp-action="Index">Commentss</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a asp-area="" asp-controller="Categories" asp-action="Index">Categories</a></li>
+                            <li><a asp-area="" asp-controller="Tags" asp-action="Index">Tags</a></li>
+                        </ul>
+                    </a>
+                    <a class="blog-nav-item" asp-area="" asp-controller="Home" asp-action="About">About</a>
+                    <a class="blog-nav-item" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
+                </nav>
+            </div>
+        </div>
+        <div class="container">
+            @RenderBody()
+        </div><!-- /.container -->
+        <footer class="blog-footer">
+            <p>&copy; 2017 - MasteringEFCore</p>
+        </footer>
+    </div>
+</body>
+</html>
