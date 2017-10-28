@@ -122,7 +122,8 @@ namespace MasteringEFCore.Transactions.Final.Controllers
             var results = await _postRepository.GetAsync(
                 new ExpressionPostQueries.GetPostByPublishedYearQuery(_context)
                 {
-                    IncludeData = true
+                    IncludeData = true,
+                    Year = year
                 });
             return Ok(results);
         }
@@ -134,9 +135,45 @@ namespace MasteringEFCore.Transactions.Final.Controllers
             var results = await _postRepository.GetAsync(
                 new ExpressionPostQueries.GetPostByTitleQuery(_context)
                 {
-                    IncludeData = true
+                    IncludeData = true,
+                    Title = title
                 });
             return Ok(results);
+        }
+
+        public async Task<IActionResult> Display(string id)
+        {
+            var url = id;
+            if (url == null)
+            {
+                return NotFound();
+            }
+
+            var post = await _postRepository.GetSingleAsync(
+                new GetPostByUrlQuery(_context)
+                {
+                    IncludeData = true,
+                    Url = url
+                });
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            if (!post.FileId.Equals(Guid.Empty))
+            {
+                var file = await _fileRepository.GetSingleAsync(
+                    new GetFileByIdQuery(_filesContext)
+                    {
+                        Id = post.FileId
+                    });
+                if (file != null)
+                {
+                    post.FileName = file.FileName;
+                }
+            }
+
+            return View(post);
         }
 
         // GET: Posts/Details/5

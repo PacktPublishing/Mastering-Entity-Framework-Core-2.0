@@ -27,6 +27,7 @@
   <ItemGroup>
     <Folder Include="Views\Account\" />
     <Folder Include="Views\Account\" />
+    <Folder Include="Views\Shared\Components\RecentPosts\" />
   </ItemGroup>
 
 </Project>
