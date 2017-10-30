@@ -188,6 +188,13 @@ namespace MasteringEFCore.Transactions.Final.Controllers
                 }
             }
 
+            post.Author = post.Author ?? new User();
+            post.Category = post.Category ?? new Category();
+            post.TagPosts = post.TagPosts ?? new List<TagPost>();
+            post.Comments = post.Comments ?? new List<Comment>();
+            post.Tags = post.Tags ?? new List<Tag>();
+            post.TagIds = post.TagIds ?? new List<int>();
+
             return View(post);
         }
 

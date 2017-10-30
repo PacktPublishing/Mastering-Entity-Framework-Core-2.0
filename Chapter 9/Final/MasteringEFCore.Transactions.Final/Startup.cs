@@ -38,6 +38,7 @@ namespace MasteringEFCore
                 options.UseSqlServer(Configuration.GetConnectionString("FilesConnection")));
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<IFileRepository, FileRepository>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddMvc().AddJsonOptions(options =>
             {
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
