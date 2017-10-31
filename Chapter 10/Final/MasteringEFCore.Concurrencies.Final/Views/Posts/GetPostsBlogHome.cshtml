@@ -1,0 +1,23 @@
+@model IEnumerable<MasteringEFCore.Concurrencies.Final.Models.Post>
+@{
+    ViewData["Title"] = "GetPostsBlogHome";
+}
+
+<div class="blog-header">
+    <h1 class="blog-title">The Bootstrap Blog</h1>
+    <p class="lead blog-description">The official example template of creating a blog with Bootstrap.</p>
+</div>
+<div class="row">
+    <div class="col-sm-8 blog-main">
+        @foreach (var item in Model)
+        {
+            <div class="blog-post">
+                <a asp-controller="Posts"
+                   asp-action="Display"
+                   asp-route-id="@item.Url"><h2 class="blog-post-title">@item.Title</h2></a>
+                <p class="blog-post-meta">@item.CreatedAt.ToString("MMMM dd, yyyy") by <a href="#">@item.Author.DisplayName</a></p>
+                <p>@item.Content</p>
+            </div>
+        }
+    </div>
+</div>
