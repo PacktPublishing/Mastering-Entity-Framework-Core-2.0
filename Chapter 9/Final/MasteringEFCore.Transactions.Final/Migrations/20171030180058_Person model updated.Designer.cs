@@ -8,9 +8,10 @@ using MasteringEFCore.Transactions.Final.Data;
 namespace MasteringEFCore.Transactions.Final.Migrations
 {
     [DbContext(typeof(BlogContext))]
-    partial class BlogContextModelSnapshot : ModelSnapshot
+    [Migration("20171030180058_Person model updated")]
+    partial class Personmodelupdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -163,9 +164,9 @@ namespace MasteringEFCore.Transactions.Final.Migrations
 
                     b.Property<string>("Biography");
 
-                    b.Property<DateTime?>("CreatedAt");
+                    b.Property<DateTime>("CreatedAt");
 
-                    b.Property<int?>("CreatedBy");
+                    b.Property<int>("CreatedBy");
 
                     b.Property<string>("FirstName");
 
@@ -173,9 +174,9 @@ namespace MasteringEFCore.Transactions.Final.Migrations
 
                     b.Property<string>("LastName");
 
-                    b.Property<DateTime?>("ModifiedAt");
+                    b.Property<DateTime>("ModifiedAt");
 
-                    b.Property<int?>("ModifiedBy");
+                    b.Property<int>("ModifiedBy");
 
                     b.Property<string>("NickName")
                         .IsRequired();

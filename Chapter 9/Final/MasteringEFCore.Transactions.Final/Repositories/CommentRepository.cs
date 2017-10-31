@@ -1,4 +1,5 @@
-﻿using MasteringEFCore.Transactions.Final.Core.Queries;
+﻿using MasteringEFCore.Transactions.Final.Core.Commands;
+using MasteringEFCore.Transactions.Final.Core.Queries;
 using MasteringEFCore.Transactions.Final.Data;
 using MasteringEFCore.Transactions.Final.Models;
 using System;
@@ -27,6 +28,16 @@ namespace MasteringEFCore.Transactions.Final.Repositories
             where T : IQueryHandlerAsync<IEnumerable<Comment>>
         {
             return await query.HandleAsync();
+        }
+
+        public int Execute<T>(T command) where T : ICommandHandler<int>
+        {
+            return command.Handle();
+        }
+
+        public async Task<int> ExecuteAsync<T>(T command) where T : ICommandHandlerAsync<int>
+        {
+            return await command.HandleAsync();
         }
     }
 }

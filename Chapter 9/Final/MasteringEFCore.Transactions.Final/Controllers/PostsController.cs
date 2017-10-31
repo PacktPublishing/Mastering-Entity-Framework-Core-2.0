@@ -198,6 +198,12 @@ namespace MasteringEFCore.Transactions.Final.Controllers
             return View(post);
         }
 
+        [HttpGet]
+        public ActionResult GetCommentsListViewComponent(string postId)
+        {
+            return ViewComponent("CommentsListViewComponent", postId);
+        }
+
         // GET: Posts/Details/5
         public async Task<IActionResult> Details(int? id)
         {

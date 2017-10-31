@@ -4,9 +4,9 @@
         <div class="blog-post-comments">
             @foreach (var comment in Model)
             {
-                <div class="comment-row">
-                    <div class="comment-item">
-                        <h5 class="mt-0">@comment.Person.NickName</h5>
+                <div class="media mb-4">
+                    <div class="media-body">
+                        <h3 class="mt-0">@comment.Person.NickName</h3>
                         @comment.Content
                     </div>
                 </div>

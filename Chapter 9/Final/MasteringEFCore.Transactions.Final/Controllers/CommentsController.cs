@@ -8,6 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using MasteringEFCore.Transactions.Final.Data;
 using MasteringEFCore.Transactions.Final.Models;
 using Microsoft.AspNetCore.Authorization;
+using MasteringEFCore.Transactions.Final.Repositories;
+using MasteringEFCore.Transactions.Final.Infrastructure.Commands.Comments;
+using Microsoft.Extensions.Configuration;
+using MasteringEFCore.Transactions.Final.ViewModels;
 
 namespace MasteringEFCore.Transactions.Final.Controllers
 {
@@ -15,10 +19,14 @@ namespace MasteringEFCore.Transactions.Final.Controllers
     public class CommentsController : Controller
     {
         private readonly BlogContext _context;
+        private readonly IConfigurationRoot _configuration;
+        private readonly ICommentRepository _repository;
 
-        public CommentsController(BlogContext context)
+        public CommentsController(IConfigurationRoot configuration, BlogContext context, ICommentRepository repository)
         {
-            _context = context;    
+            _context = context;
+            _repository = repository;
+            _configuration = configuration;
         }
 
         // GET: Comments
@@ -74,6 +82,20 @@ namespace MasteringEFCore.Transactions.Final.Controllers
             ViewData["PersonId"] = new SelectList(_context.Set<Person>(), "Id", "Id", comment.PersonId);
             ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Id", comment.PostId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", comment.UserId);
+            return View(comment);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> CreatePostComment([FromBody] CommentViewModel comment)
+        {
+            var results = await _repository.ExecuteAsync(
+                new CreateCommentCommand(_configuration, _context)
+                {
+                    PostId = comment.PostId,
+                    Content = comment.Content,
+                    Nickname = comment.Nickname
+                });
             return View(comment);
         }
 

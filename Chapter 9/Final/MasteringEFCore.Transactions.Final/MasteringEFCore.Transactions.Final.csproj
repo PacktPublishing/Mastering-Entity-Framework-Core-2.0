@@ -28,6 +28,7 @@
     <Folder Include="Views\Account\" />
     <Folder Include="Views\Account\" />
     <Folder Include="Views\Posts\Components\CommentsList\" />
+    <Folder Include="Views\Posts\Components\AddComment\" />
     <Folder Include="Views\Shared\Components\RecentPosts\" />
   </ItemGroup>
 

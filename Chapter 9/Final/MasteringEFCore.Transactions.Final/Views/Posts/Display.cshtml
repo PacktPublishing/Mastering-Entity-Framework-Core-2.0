@@ -16,7 +16,12 @@
         </div>
     </div>
 </div>
-<vc:comments-list post-id="@Model.Id"></vc:comments-list>
+<hr />
+<vc:add-comment post-id="@Model.Id"></vc:add-comment>
+<hr />
+<div id="commentsList">
+    <vc:comments-list post-id="@Model.Id"></vc:comments-list>
+</div>
 
 @*<h2>Display</h2>
 

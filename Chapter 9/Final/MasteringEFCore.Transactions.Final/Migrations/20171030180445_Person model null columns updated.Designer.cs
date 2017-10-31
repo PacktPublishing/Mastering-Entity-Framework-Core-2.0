@@ -8,9 +8,10 @@ using MasteringEFCore.Transactions.Final.Data;
 namespace MasteringEFCore.Transactions.Final.Migrations
 {
     [DbContext(typeof(BlogContext))]
-    partial class BlogContextModelSnapshot : ModelSnapshot
+    [Migration("20171030180445_Person model null columns updated")]
+    partial class Personmodelnullcolumnsupdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
