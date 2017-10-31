@@ -76,10 +76,6 @@ namespace MasteringEFCore.QueryObjectPattern.Final.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> GetPostsByAuthor(string author)
         {
-            // Solution: Introduction to Repositories
-            //return _context.Posts
-            //    .Where(x => x.Author.Username.ToLower().Contains(author.ToLower()));
-
             //var results = await _repositoryWithQueries.GetAsync(
             //    new GetPostByAuthorQuery(author, true));
             //var results = await _postRepositoryWithCommandsQueries.GetAsync(
@@ -101,10 +97,6 @@ namespace MasteringEFCore.QueryObjectPattern.Final.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> GetPostsByCategory(string category)
         {
-            // Solution: Introduction to Repositories
-            //return _context.Posts
-            //    .Where(x => x.Category.Name.ToLower().Contains(category.ToLower()));
-
             //var results = await _repositoryWithQueries.GetAsync(
             //    new GetPostByCategoryQuery(category, true));
             //var results = await _postRepositoryWithCommandsQueries.GetAsync(
@@ -126,10 +118,6 @@ namespace MasteringEFCore.QueryObjectPattern.Final.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> GetPostByHighestVisitors()
         {
-            // Solution: Introduction to Repositories
-            //return _context.Posts
-            //    .OrderByDescending(x => x.VisitorCount);
-
             //var results = await _repositoryWithQueries.GetAsync(
             //    new GetPostByHighestVisitorsQuery(true));
             var results = await _postRepositoryWithCommandsQueries.GetAsync(
@@ -144,10 +132,6 @@ namespace MasteringEFCore.QueryObjectPattern.Final.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> GetPostByPublishedYear(int year)
         {
-            // Solution: Introduction to Repositories
-            //return _context.Posts
-            //    .Where(x => x.PublishedDateTime.Year.Equals(year));
-
             //var results = await _repositoryWithQueries.GetAsync(
             //    new GetPostByPublishedYearQuery(year, true));
             //var results = await _postRepositoryWithCommandsQueries.GetAsync(
@@ -167,10 +151,6 @@ namespace MasteringEFCore.QueryObjectPattern.Final.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> GetPostByTitle(string title)
         {
-            // Solution: Introduction to Repositories
-            //return _context.Posts
-            //    .Where(x => x.Title.ToLower().Contains(title.ToLower()));
-
             //var results = await _repositoryWithQueries.GetAsync(
             //    new GetPostByTitleQuery(title, true));
             //var results = await _postRepositoryWithCommandsQueries.GetAsync(
