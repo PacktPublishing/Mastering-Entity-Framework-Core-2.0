@@ -62,8 +62,9 @@ namespace MasteringEFCore.Concurrencies.Final.Infrastructure.Commands.Comments
                                     ModifiedBy = personId
                                 };
 
-                                Context.Add(comment);
-                                returnValue = Context.SaveChanges();
+                                context.Database.UseTransaction(transaction);
+                                context.Comments.Add(comment);
+                                returnValue = context.SaveChanges();
                             }
 
                             transaction.Commit();
