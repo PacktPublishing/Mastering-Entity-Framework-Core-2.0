@@ -13,6 +13,7 @@ namespace MasteringEFCore.Concurrencies.Final.Models
         public string Content { get; set; }
         public DateTime CommentedAt { get; set; }
         public DateTime CreatedAt { get; set; }
+        [ConcurrencyCheck]
         public DateTime ModifiedAt { get; set; }
         public int CreatedBy { get; set; }
         public int ModifiedBy { get; set; }

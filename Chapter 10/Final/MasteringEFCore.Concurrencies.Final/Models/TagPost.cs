@@ -16,6 +16,7 @@ namespace MasteringEFCore.Concurrencies.Final.Models
         public int PostId { get; set; }
         public Post Post { get; set; }
         public DateTime CreatedAt { get; set; }
+        [ConcurrencyCheck]
         public DateTime ModifiedAt { get; set; }
         public int CreatedBy { get; set; }
         public int ModifiedBy { get; set; }

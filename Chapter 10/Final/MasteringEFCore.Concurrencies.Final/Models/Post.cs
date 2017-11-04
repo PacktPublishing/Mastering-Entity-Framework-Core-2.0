@@ -25,6 +25,7 @@ namespace MasteringEFCore.Concurrencies.Final.Models
         public string Url { get; set; }
         public long VisitorCount { get; set; }
         public DateTime CreatedAt { get; set; }
+        [ConcurrencyCheck]
         public DateTime ModifiedAt { get; set; }
         public int CreatedBy { get; set; }
         public int ModifiedBy { get; set; }
