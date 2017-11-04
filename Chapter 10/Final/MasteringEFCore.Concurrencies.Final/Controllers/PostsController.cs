@@ -441,7 +441,7 @@ namespace MasteringEFCore.Concurrencies.Final.Controllers
                         ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
                     }
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
                 {
                     if (!PostExists(post.Id))
                     {
@@ -449,7 +449,90 @@ namespace MasteringEFCore.Concurrencies.Final.Controllers
                     }
                     else
                     {
-                        throw;
+                        var transactions = new TransactionScope();
+                        try
+                        {
+                            foreach (var entry in dbUpdateConcurrencyException.Entries)
+                            {
+                                if (entry.Entity is Post)
+                                {
+                                    var postToBeUpdated = await _postRepository.GetSingleAsync(
+                                        new GetPostByIdQuery(_context) { Id = ((Post)entry.Entity).Id }
+                                        );
+                                    var postFromDatabase = _context.Entry(postToBeUpdated);
+
+                                    foreach (var property in entry.Metadata.GetProperties())
+                                    {
+                                        var proposedValue = entry.Property(property.Name).CurrentValue;
+                                        var originalValue = entry.Property(property.Name).OriginalValue;
+                                        var databaseValue = postFromDatabase.Property(property.Name).CurrentValue;
+
+                                        // entry.Property(property.Name).CurrentValue = <value to be saved>;
+
+                                        // Update original values to
+                                        entry.Property(property.Name).OriginalValue = postFromDatabase.Property(property.Name).CurrentValue;
+                                    }
+                                }
+                                else if (entry.Entity is Models.File)
+                                {
+                                    var fileToBeUpdated = await _fileRepository.GetSingleAsync(
+                                        new GetFileByIdQuery(_filesContext) { Id = ((Models.File)entry.Entity).Id }
+                                        );
+                                    var fileFromDatabase = _context.Entry(fileToBeUpdated);
+
+                                    #region Tracking changes in columns and storing respective data
+                                    foreach (var property in entry.Metadata.GetProperties())
+                                    {
+                                        var proposedValue = entry.Property(property.Name).CurrentValue;
+                                        var originalValue = entry.Property(property.Name).OriginalValue;
+                                        var databaseValue = fileFromDatabase.Property(property.Name).CurrentValue;
+
+                                        if (property.Name.Equals("Timestamp"))
+                                        {
+                                            entry.Property(property.Name).OriginalValue = fileFromDatabase.Property(property.Name).CurrentValue;
+                                        }
+
+                                        if (originalValue.Equals(databaseValue) && !proposedValue.Equals(originalValue))
+                                        {
+                                            // If the changes from database and original are same, 
+                                            // then we will save the entity with proposed value.
+                                            // It means another user had updated the column 
+                                            // the latest change from datastore will be retained
+                                            entry.Property(property.Name).CurrentValue = proposedValue;
+                                        }
+                                        else if (!originalValue.Equals(databaseValue) && proposedValue.Equals(originalValue))
+                                        {
+                                            // If the proposed value and original value are same,
+                                            // then we will update the entity with the database value
+                                            // It means the current user from application\UI had updated 
+                                            // the column and we were retaining it
+                                            entry.Property(property.Name).CurrentValue = databaseValue;
+                                        }
+                                        else if (!originalValue.Equals(databaseValue) && !proposedValue.Equals(originalValue))
+                                        {
+                                            // Latest changes from application\UI will be persisted, optimistic concurrency
+                                            entry.Property(property.Name).CurrentValue = proposedValue;
+
+                                            // Ignoring the latest changes from application\UI, pessimistic concurrency
+                                        }
+                                    }
+                                    #endregion
+
+                                    #region Configure EF Core to ignore any changes from the app\ui and retain data from datastore
+                                    #endregion
+                                }
+                                else
+                                {
+                                    throw new NotSupportedException("Don't know how to handle concurrency conflicts for " + entry.Metadata.Name);
+                                }
+                            }
+                            transactions.Commit();
+                        }
+                        catch (Exception exception)
+                        {
+                            transactions.Rollback();
+                            ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
+                        }
                     }
                 }
                 return RedirectToAction("Index");
