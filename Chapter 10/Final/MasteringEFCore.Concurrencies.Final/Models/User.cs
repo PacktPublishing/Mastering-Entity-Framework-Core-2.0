@@ -21,7 +21,7 @@ namespace MasteringEFCore.Concurrencies.Final.Models
         [EmailAddress(ErrorMessage = "Provide a valid email address")]
         public string Email { get; set; }
         public DateTime CreatedAt { get; set; }
-        [ConcurrencyCheck]
+        //[ConcurrencyCheck]
         public DateTime ModifiedAt { get; set; }
         public int CreatedBy { get; set; }
         public int ModifiedBy { get; set; }
@@ -37,5 +37,6 @@ namespace MasteringEFCore.Concurrencies.Final.Models
         [Required(ErrorMessage = "Person is required")]
         public int PersonId { get; set; }
         public Person Person { get; set; }
+        public byte[] Timestamp { get; set; }
     }
 }

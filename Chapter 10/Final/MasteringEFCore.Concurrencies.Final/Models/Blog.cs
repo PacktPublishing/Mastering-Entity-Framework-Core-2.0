@@ -20,12 +20,13 @@ namespace MasteringEFCore.Concurrencies.Final.Models
         [Url(ErrorMessage = "Provide a valid url")]
         public string Url { get; set; }
         public DateTime CreatedAt { get; set; }
-        [ConcurrencyCheck]
+        //[ConcurrencyCheck]
         public DateTime ModifiedAt { get; set; }
         public int CreatedBy { get; set; }
         public int ModifiedBy { get; set; }
 
         [JsonIgnore]
         public ICollection<Post> Posts { get; set; }
+        public byte[] Timestamp { get; set; }
     }
 }

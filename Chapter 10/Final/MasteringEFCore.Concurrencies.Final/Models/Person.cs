@@ -26,7 +26,7 @@ namespace MasteringEFCore.Concurrencies.Final.Models
         [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
         public DateTime? CreatedAt { get; set; }
-        [ConcurrencyCheck]
+        //[ConcurrencyCheck]
         public DateTime? ModifiedAt { get; set; }
         public int? CreatedBy { get; set; }
         public int? ModifiedBy { get; set; }
@@ -35,5 +35,6 @@ namespace MasteringEFCore.Concurrencies.Final.Models
         public User User { get; set; }
         [JsonIgnore]
         public ICollection<Comment> Comments { get; set; }
+        public byte[] Timestamp { get; set; }
     }
 }

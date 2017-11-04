@@ -13,7 +13,7 @@ namespace MasteringEFCore.Concurrencies.Final.Models
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
         public DateTime CreatedAt { get; set; }
-        [ConcurrencyCheck]
+        //[ConcurrencyCheck]
         public DateTime ModifiedAt { get; set; }
         public int CreatedBy { get; set; }
         public int ModifiedBy { get; set; }
@@ -27,5 +27,6 @@ namespace MasteringEFCore.Concurrencies.Final.Models
         public ICollection<Blog> Blogs { get; set; }
         [JsonIgnore]
         public ICollection<Post> Posts { get; set; }
+        public byte[] Timestamp { get; set; }
     }
 }

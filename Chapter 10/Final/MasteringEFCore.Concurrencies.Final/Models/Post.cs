@@ -25,7 +25,7 @@ namespace MasteringEFCore.Concurrencies.Final.Models
         public string Url { get; set; }
         public long VisitorCount { get; set; }
         public DateTime CreatedAt { get; set; }
-        [ConcurrencyCheck]
+        //[ConcurrencyCheck]
         public DateTime ModifiedAt { get; set; }
         public int CreatedBy { get; set; }
         public int ModifiedBy { get; set; }
@@ -55,5 +55,6 @@ namespace MasteringEFCore.Concurrencies.Final.Models
         public Guid FileId { get; set; }
         [NotMapped]
         public string FileName { get; set; }
+        public byte[] Timestamp { get; set; }
     }
 }

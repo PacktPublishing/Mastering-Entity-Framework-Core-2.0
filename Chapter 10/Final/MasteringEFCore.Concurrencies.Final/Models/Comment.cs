@@ -13,7 +13,7 @@ namespace MasteringEFCore.Concurrencies.Final.Models
         public string Content { get; set; }
         public DateTime CommentedAt { get; set; }
         public DateTime CreatedAt { get; set; }
-        [ConcurrencyCheck]
+        //[ConcurrencyCheck]
         public DateTime ModifiedAt { get; set; }
         public int CreatedBy { get; set; }
         public int ModifiedBy { get; set; }
@@ -25,5 +25,6 @@ namespace MasteringEFCore.Concurrencies.Final.Models
         public Person Person { get; set; }
         public int? UserId { get; set; }
         public User User { get; set; }
+        public byte[] Timestamp { get; set; }
     }
 }
