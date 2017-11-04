@@ -27,6 +27,7 @@ namespace MasteringEFCore.Concurrencies.Final.Models
         public ICollection<Blog> Blogs { get; set; }
         [JsonIgnore]
         public ICollection<Post> Posts { get; set; }
+        [Timestamp]
         public byte[] Timestamp { get; set; }
     }
 }

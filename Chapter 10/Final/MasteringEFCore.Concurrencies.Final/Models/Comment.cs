@@ -25,6 +25,7 @@ namespace MasteringEFCore.Concurrencies.Final.Models
         public Person Person { get; set; }
         public int? UserId { get; set; }
         public User User { get; set; }
+        [Timestamp]
         public byte[] Timestamp { get; set; }
     }
 }

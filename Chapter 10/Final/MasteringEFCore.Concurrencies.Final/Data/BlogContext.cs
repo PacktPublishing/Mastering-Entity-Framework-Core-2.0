@@ -32,10 +32,10 @@ namespace MasteringEFCore.Concurrencies.Final.Data
             //    .ToTable("Blog")
             //    .Property(x=>x.ModifiedAt)
             //    .IsConcurrencyToken();
-            modelBuilder.Entity<Blog>()
-                .Property(p => p.Timestamp)
-                .ValueGeneratedOnAddOrUpdate()
-                .IsConcurrencyToken();
+            //modelBuilder.Entity<Blog>()
+            //    .Property(p => p.Timestamp)
+            //    .ValueGeneratedOnAddOrUpdate()
+            //    .IsConcurrencyToken();
             modelBuilder.Entity<Post>()
                 .ToTable("Post")
                 .HasOne(x=>x.Author)
@@ -46,10 +46,10 @@ namespace MasteringEFCore.Concurrencies.Final.Data
             //    .ToTable("Post")
             //    .Property(x => x.ModifiedAt)
             //    .IsConcurrencyToken();
-            modelBuilder.Entity<Post>()
-                .Property(p => p.Timestamp)
-                .ValueGeneratedOnAddOrUpdate()
-                .IsConcurrencyToken();
+            //modelBuilder.Entity<Post>()
+            //    .Property(p => p.Timestamp)
+            //    .ValueGeneratedOnAddOrUpdate()
+            //    .IsConcurrencyToken();
             modelBuilder.Entity<User>()
                 .ToTable("User")
                 .HasOne(x=>x.Address)
@@ -59,28 +59,28 @@ namespace MasteringEFCore.Concurrencies.Final.Data
             //    .ToTable("User")
             //    .Property(x => x.ModifiedAt)
             //    .IsConcurrencyToken();
-            modelBuilder.Entity<User>()
-                .Property(p => p.Timestamp)
-                .ValueGeneratedOnAddOrUpdate()
-                .IsConcurrencyToken();
+            //modelBuilder.Entity<User>()
+            //    .Property(p => p.Timestamp)
+            //    .ValueGeneratedOnAddOrUpdate()
+            //    .IsConcurrencyToken();
             modelBuilder.Entity<Address>().ToTable("Address");
             //modelBuilder.Entity<Address>()
             //    .ToTable("Address")
             //    .Property(x => x.ModifiedAt)
             //    .IsConcurrencyToken();
-            modelBuilder.Entity<Address>()
-                .Property(p => p.Timestamp)
-                .ValueGeneratedOnAddOrUpdate()
-                .IsConcurrencyToken();
+            //modelBuilder.Entity<Address>()
+            //    .Property(p => p.Timestamp)
+            //    .ValueGeneratedOnAddOrUpdate()
+            //    .IsConcurrencyToken();
             modelBuilder.Entity<Tag>().ToTable("Tag");
             //modelBuilder.Entity<Tag>()
             //    .ToTable("Tag")
             //    .Property(x => x.ModifiedAt)
             //    .IsConcurrencyToken();
-            modelBuilder.Entity<Tag>()
-                .Property(p => p.Timestamp)
-                .ValueGeneratedOnAddOrUpdate()
-                .IsConcurrencyToken();
+            //modelBuilder.Entity<Tag>()
+            //    .Property(p => p.Timestamp)
+            //    .ValueGeneratedOnAddOrUpdate()
+            //    .IsConcurrencyToken();
             modelBuilder.Entity<TagPost>()
                 .ToTable("TagPost")
                 .HasOne(x => x.Tag)
@@ -95,10 +95,10 @@ namespace MasteringEFCore.Concurrencies.Final.Data
             //    .ToTable("TagPost")
             //    .Property(x => x.ModifiedAt)
             //    .IsConcurrencyToken();
-            modelBuilder.Entity<TagPost>()
-                .Property(p => p.Timestamp)
-                .ValueGeneratedOnAddOrUpdate()
-                .IsConcurrencyToken();
+            //modelBuilder.Entity<TagPost>()
+            //    .Property(p => p.Timestamp)
+            //    .ValueGeneratedOnAddOrUpdate()
+            //    .IsConcurrencyToken();
             modelBuilder.Entity<Category>()
                 .ToTable("Category")
                 // HasOptional() was not part of EF Core, HasOne() accepts NULL values so we use it as work around
@@ -111,10 +111,10 @@ namespace MasteringEFCore.Concurrencies.Final.Data
             //    .ToTable("Category")
             //    .Property(x => x.ModifiedAt)
             //    .IsConcurrencyToken();
-            modelBuilder.Entity<Category>()
-                .Property(p => p.Timestamp)
-                .ValueGeneratedOnAddOrUpdate()
-                .IsConcurrencyToken();
+            //modelBuilder.Entity<Category>()
+            //    .Property(p => p.Timestamp)
+            //    .ValueGeneratedOnAddOrUpdate()
+            //    .IsConcurrencyToken();
             modelBuilder.Entity<Comment>()
                 .ToTable("Comment")
                 .HasOne(x=>x.Person)
@@ -131,10 +131,10 @@ namespace MasteringEFCore.Concurrencies.Final.Data
             //    .ToTable("Comment")
             //    .Property(x => x.ModifiedAt)
             //    .IsConcurrencyToken();
-            modelBuilder.Entity<Comment>()
-                .Property(p => p.Timestamp)
-                .ValueGeneratedOnAddOrUpdate()
-                .IsConcurrencyToken();
+            //modelBuilder.Entity<Comment>()
+            //    .Property(p => p.Timestamp)
+            //    .ValueGeneratedOnAddOrUpdate()
+            //    .IsConcurrencyToken();
             modelBuilder.Entity<Person>()
                 .ToTable("Person")
                 .HasOne(x=>x.User)
@@ -144,10 +144,10 @@ namespace MasteringEFCore.Concurrencies.Final.Data
             //    .ToTable("Person")
             //    .Property(x => x.ModifiedAt)
             //    .IsConcurrencyToken();
-            modelBuilder.Entity<Person>()
-                .Property(p => p.Timestamp)
-                .ValueGeneratedOnAddOrUpdate()
-                .IsConcurrencyToken();
+            //modelBuilder.Entity<Person>()
+            //    .Property(p => p.Timestamp)
+            //    .ValueGeneratedOnAddOrUpdate()
+            //    .IsConcurrencyToken();
         }
     }
 }

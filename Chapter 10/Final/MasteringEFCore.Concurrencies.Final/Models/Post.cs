@@ -55,6 +55,7 @@ namespace MasteringEFCore.Concurrencies.Final.Models
         public Guid FileId { get; set; }
         [NotMapped]
         public string FileName { get; set; }
+        [Timestamp]
         public byte[] Timestamp { get; set; }
     }
 }

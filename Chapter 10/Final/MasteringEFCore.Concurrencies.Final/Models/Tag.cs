@@ -20,6 +20,7 @@ namespace MasteringEFCore.Concurrencies.Final.Models
 
         [JsonIgnore]
         public ICollection<TagPost> TagPosts { get; set; }
+        [Timestamp]
         public byte[] Timestamp { get; set; }
     }
 }
