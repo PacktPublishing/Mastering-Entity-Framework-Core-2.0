@@ -29,9 +29,7 @@ namespace MasteringEFCore.Concurrencies.Final.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Blog>()
-                .ToTable("Blog")
-                .Property(x=>x.ModifiedAt)
-                .IsConcurrencyToken();
+                .ToTable("Blog");
             modelBuilder.Entity<Post>()
                 .ToTable("Post")
                 .HasOne(x=>x.Author)
