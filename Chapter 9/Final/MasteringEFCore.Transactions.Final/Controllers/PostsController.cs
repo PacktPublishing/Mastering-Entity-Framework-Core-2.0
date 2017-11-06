@@ -78,6 +78,7 @@ namespace MasteringEFCore.Transactions.Final.Controllers
 
         [HttpGet]
         [Produces("application/json")]
+        [Route("GetPaginatedPosts")]
         public async Task<IActionResult> GetPaginatedPosts(string keyword, int pageNumber, int pageCount)
         {
             var results = await _postRepository.GetAsync(
@@ -93,6 +94,7 @@ namespace MasteringEFCore.Transactions.Final.Controllers
 
         [HttpGet]
         [Produces("application/json")]
+        [Route("GetPostsByAuthor")]
         public async Task<IActionResult> GetPostsByAuthor(string author)
         {
             var results = await _postRepository.GetAsync(
@@ -106,6 +108,7 @@ namespace MasteringEFCore.Transactions.Final.Controllers
 
         [HttpGet]
         [Produces("application/json")]
+        [Route("GetPostsByCategory")]
         public async Task<IActionResult> GetPostsByCategory(string category)
         {
             var results = await _postRepository.GetAsync(
@@ -119,6 +122,7 @@ namespace MasteringEFCore.Transactions.Final.Controllers
 
         [HttpGet]
         [Produces("application/json")]
+        [Route("GetPostByHighestVisitors")]
         public async Task<IActionResult> GetPostByHighestVisitors()
         {
             var results = await _postRepository.GetAsync(
@@ -131,6 +135,7 @@ namespace MasteringEFCore.Transactions.Final.Controllers
 
         [HttpGet]
         [Produces("application/json")]
+        [Route("GetPostByPublishedYear")]
         public async Task<IActionResult> GetPostByPublishedYear(int year)
         {
             var results = await _postRepository.GetAsync(
@@ -144,6 +149,7 @@ namespace MasteringEFCore.Transactions.Final.Controllers
 
         [HttpGet]
         [Produces("application/json")]
+        [Route("GetPostByTitle")]
         public async Task<IActionResult> GetPostByTitle(string title)
         {
             var results = await _postRepository.GetAsync(
@@ -199,12 +205,14 @@ namespace MasteringEFCore.Transactions.Final.Controllers
         }
 
         [HttpGet]
+        [Route("GetCommentsListViewComponent")]
         public ActionResult GetCommentsListViewComponent(string postId)
         {
             return ViewComponent("CommentsListViewComponent", postId);
         }
 
         // GET: Posts/Details/5
+        [Route("{id:int?}")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -240,6 +248,7 @@ namespace MasteringEFCore.Transactions.Final.Controllers
         }
 
         // GET: Posts/Create
+        [Route("Create")]
         public IActionResult Create()
         {
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id");
@@ -254,6 +263,7 @@ namespace MasteringEFCore.Transactions.Final.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("Create")]
         public async Task<IActionResult> Create([Bind("Id,Title,Content,Summary," +
             "PublishedDateTime,Url,VisitorCount,CreatedAt,ModifiedAt,BlogId," +
             "AuthorId,CategoryId,TagIds")] Post post, IFormFile headerImage)
@@ -327,6 +337,7 @@ namespace MasteringEFCore.Transactions.Final.Controllers
         }
 
         // GET: Posts/Edit/5
+        [Route("Edit/{id:int?}")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -368,6 +379,7 @@ namespace MasteringEFCore.Transactions.Final.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Route("Edit/{id:int?}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,Summary," +
             "PublishedDateTime,Url,VisitorCount,CreatedAt,ModifiedAt,BlogId,AuthorId," +
@@ -462,6 +474,7 @@ namespace MasteringEFCore.Transactions.Final.Controllers
         }
 
         // GET: Posts/Delete/5
+        [Route("Delete/{id:int?}")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -498,6 +511,7 @@ namespace MasteringEFCore.Transactions.Final.Controllers
 
         // POST: Posts/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Route("Delete/{id:int?}/{fileId}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id, Guid fileId)
         {

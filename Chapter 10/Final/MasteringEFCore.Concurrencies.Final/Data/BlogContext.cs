@@ -28,10 +28,10 @@ namespace MasteringEFCore.Concurrencies.Final.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<Blog>()
-            //    .ToTable("Blog")
-            //    .Property(x=>x.ModifiedAt)
-            //    .IsConcurrencyToken();
+            modelBuilder.Entity<Blog>()
+                .ToTable("Blog");
+                //.Property(x => x.ModifiedAt)
+                //.IsConcurrencyToken();
             //modelBuilder.Entity<Blog>()
             //    .Property(p => p.Timestamp)
             //    .ValueGeneratedOnAddOrUpdate()

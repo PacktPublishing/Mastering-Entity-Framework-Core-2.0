@@ -27,10 +27,11 @@ namespace MasteringEFCore.Concurrencies.Starter.Controllers
         // GET: Blogs
         public async Task<IActionResult> Index()
         {
-            //return View(await _context.Blogs.FromSql("Select * from dbo.Blog").ToListAsync());
-            return View(await _context.Blogs.FromSql("Select [Id],[Title],[Subtitle],[Description],[Url] from dbo.Blog").ToListAsync());
+            return View(await _context.Blogs.FromSql("Select * from dbo.Blog").ToListAsync());
+            //return View(await _context.Blogs.FromSql("Select [Id],[Title],[Subtitle],[Description],[Url] from dbo.Blog").ToListAsync());
         }
         
+        [Route("LatestBlogs")]
         public async Task<IActionResult> LatestBlogs()
         {
             //return View("Index", await _context.Blogs.FromSql("EXEC [dbo].[GetLatestBlogs]").ToListAsync());
@@ -53,6 +54,7 @@ namespace MasteringEFCore.Concurrencies.Starter.Controllers
         }
 
         // GET: Blogs/Details/5
+        [Route("{id}")]
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -70,6 +72,7 @@ namespace MasteringEFCore.Concurrencies.Starter.Controllers
             return View(blog);
         }
 
+        [Route("GetBlogByTitle/{keyword}")]
         public async Task<IActionResult> GetBlogByTitle(string keyword)
         {
             if (keyword == null)
@@ -87,6 +90,7 @@ namespace MasteringEFCore.Concurrencies.Starter.Controllers
             return View("Details", blog);
         }
 
+        [Route("BlogsByCategory/{categoryId:int}")]
         public async Task<IActionResult> BlogsByCategory(int categoryId)
         {
             return View("Index", await _context.Blogs.
@@ -96,6 +100,7 @@ namespace MasteringEFCore.Concurrencies.Starter.Controllers
         }
 
         // GET: Blogs/Create
+        [Route("Create")]
         public IActionResult Create()
         {
             return View();
@@ -105,6 +110,7 @@ namespace MasteringEFCore.Concurrencies.Starter.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Route("Create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Blog blog)
         {
@@ -118,6 +124,7 @@ namespace MasteringEFCore.Concurrencies.Starter.Controllers
         }
 
         // GET: Blogs/Edit/5
+        [Route("Edit/{id:int?}")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -137,6 +144,7 @@ namespace MasteringEFCore.Concurrencies.Starter.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Route("Edit/{id:int?}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Url")] Blog blog)
         {
@@ -169,6 +177,7 @@ namespace MasteringEFCore.Concurrencies.Starter.Controllers
         }
 
         // GET: Blogs/Delete/5
+        [Route("Delete/{id:int?}")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -188,6 +197,7 @@ namespace MasteringEFCore.Concurrencies.Starter.Controllers
 
         // POST: Blogs/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Route("Delete/{id:int?}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
