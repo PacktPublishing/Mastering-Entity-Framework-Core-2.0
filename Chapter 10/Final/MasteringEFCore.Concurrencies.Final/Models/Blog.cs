@@ -24,6 +24,7 @@ namespace MasteringEFCore.Concurrencies.Final.Models
         public DateTime ModifiedAt { get; set; }
         public int CreatedBy { get; set; }
         public int ModifiedBy { get; set; }
+        public int? CategoryId { get; set; }
 
         [JsonIgnore]
         public ICollection<Post> Posts { get; set; }

@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace MasteringEFCore.Concurrencies.Final.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class TagsController : Controller
     {
         private readonly BlogContext _context;

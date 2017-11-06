@@ -15,7 +15,7 @@ using MasteringEFCore.Concurrencies.Final.ViewModels;
 
 namespace MasteringEFCore.Concurrencies.Final.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class CommentsController : Controller
     {
         private readonly BlogContext _context;

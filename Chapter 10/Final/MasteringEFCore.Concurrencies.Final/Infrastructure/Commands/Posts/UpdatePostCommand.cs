@@ -79,7 +79,8 @@ namespace MasteringEFCore.Concurrencies.Final.Infrastructure.Commands.Posts
                     PublishedDateTime = PublishedDateTime,
                     CreatedAt = DateTime.Now,
                     CreatedBy = AuthorId,
-                    Url = Title.Generate()
+                    Url = Title.Generate(),
+                    FileId = FileId
                 });
                 returnValue = await Context.SaveChangesAsync();
 
