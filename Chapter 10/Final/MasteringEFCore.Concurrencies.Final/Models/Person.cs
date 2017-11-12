@@ -35,7 +35,7 @@ namespace MasteringEFCore.Concurrencies.Final.Models
         public User User { get; set; }
         [JsonIgnore]
         public ICollection<Comment> Comments { get; set; }
-        [Timestamp]
-        public byte[] Timestamp { get; set; }
+        //[Timestamp]
+        //public byte[] Timestamp { get; set; }
     }
 }

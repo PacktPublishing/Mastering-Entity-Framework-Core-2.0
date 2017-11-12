@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MasteringEFCore.Concurrencies.Final.Models;
 using Microsoft.EntityFrameworkCore;
 using MasteringEFCore.Concurrencies.Final.ViewModels;
+using System.Threading;
 
 namespace MasteringEFCore.Concurrencies.Final.Data
 {
@@ -26,6 +27,45 @@ namespace MasteringEFCore.Concurrencies.Final.Data
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Person> People { get; set; }
 
+        //public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        //{
+        //    ChangeTracker.DetectChanges();
+        //    var now = DateTime.UtcNow;
+
+        //    foreach (var item in ChangeTracker.Entries<Post>().Where(e => e.State == EntityState.Added))
+        //    {
+        //        item.Property("CreatedAt").CurrentValue = now;
+        //        item.Property("ModifiedAt").CurrentValue = now;
+        //    }
+
+        //    foreach (var item in ChangeTracker.Entries<Post>().Where(e => e.State == EntityState.Modified))
+        //    {
+        //        item.Property("ModifiedAt").CurrentValue = now;
+        //    }
+
+        //    return await base.SaveChangesAsync(cancellationToken);
+        //}
+
+        //public override int SaveChanges()
+        //{
+        //    ChangeTracker.DetectChanges();
+        //    var now = DateTime.UtcNow;
+
+        //    foreach (var item in ChangeTracker.Entries<Post>().Where(e => e.State == EntityState.Added))
+        //    {
+        //        item.Property("CreatedAt").CurrentValue = now;
+        //        item.Property("ModifiedAt").CurrentValue = now;
+        //    }
+
+        //    foreach (var item in ChangeTracker.Entries<Post>().Where(e => e.State == EntityState.Modified))
+        //    {
+        //        item.Property("ModifiedAt").CurrentValue = now;
+        //    }
+
+
+        //    return base.SaveChanges();
+        //}
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Blog>()
@@ -45,6 +85,8 @@ namespace MasteringEFCore.Concurrencies.Final.Data
             //modelBuilder.Entity<Post>()
             //    .ToTable("Post")
             //    .Property(x => x.ModifiedAt)
+            //    .ValueGeneratedOnAddOrUpdate()
+            //    .HasDefaultValueSql("GETUTCDATE()")
             //    .IsConcurrencyToken();
             //modelBuilder.Entity<Post>()
             //    .Property(p => p.Timestamp)

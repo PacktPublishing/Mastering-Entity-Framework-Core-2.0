@@ -271,21 +271,37 @@ namespace MasteringEFCore.Concurrencies.Final.Controllers
             if (ModelState.IsValid)
             {
                 Models.File file = null;
-                if (headerImage != null || headerImage.ContentType.ToLower().StartsWith("image/"))
+                if (headerImage == null || (headerImage != null &&
+                    !headerImage.ContentType.ToLower().StartsWith("image/")))
                 {
-                    MemoryStream ms = new MemoryStream();
-                    headerImage.OpenReadStream().CopyTo(ms);
+                    await _postRepository.ExecuteAsync(
+                        new CreatePostCommand(_context)
+                        {
+                            Title = post.Title,
+                            Summary = post.Summary,
+                            Content = post.Content,
+                            PublishedDateTime = post.PublishedDateTime,
+                            AuthorId = post.AuthorId,
+                            BlogId = post.BlogId,
+                            CategoryId = post.CategoryId,
+                            TagIds = post.TagIds
+                        });
 
-                    file = new Models.File()
-                    {
-                        Id = Guid.NewGuid(),
-                        Name = headerImage.Name,
-                        FileName = Path.GetFileName(headerImage.FileName),
-                        Content = ms.ToArray(),
-                        Length = headerImage.Length,
-                        ContentType = headerImage.ContentType
-                    };
+                    return RedirectToAction("Index");
                 }
+
+                MemoryStream ms = new MemoryStream();
+                headerImage.OpenReadStream().CopyTo(ms);
+
+                file = new Models.File()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = headerImage.Name,
+                    FileName = Path.GetFileName(headerImage.FileName),
+                    Content = ms.ToArray(),
+                    Length = headerImage.Length,
+                    ContentType = headerImage.ContentType
+                };
 
                 var transactions = new TransactionScope();
                 try
@@ -383,7 +399,7 @@ namespace MasteringEFCore.Concurrencies.Final.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,Summary," +
             "PublishedDateTime,Url,VisitorCount,CreatedAt,ModifiedAt,BlogId,AuthorId," +
-            "CategoryId,TagIds,FileId")] Post post, IFormFile headerImage)
+            "CategoryId,TagIds,FileId,Timestamp")] Post post, IFormFile headerImage)
         {
             if (id != post.Id)
             {
@@ -392,28 +408,44 @@ namespace MasteringEFCore.Concurrencies.Final.Controllers
 
             if (ModelState.IsValid)
             {
+                    var transactions = new TransactionScope();
                 try
                 {
                     Models.File file = null;
-                    if (headerImage != null || headerImage.ContentType.ToLower().StartsWith("image/"))
+                    if (headerImage == null || (headerImage != null
+                        && !headerImage.ContentType.ToLower().StartsWith("image/")))
                     {
-                        MemoryStream ms = new MemoryStream();
-                        headerImage.OpenReadStream().CopyTo(ms);
-
-                        file = new Models.File()
-                        {
-                            Id = post.FileId,
-                            Name = headerImage.Name,
-                            FileName = Path.GetFileName(headerImage.FileName),
-                            Content = ms.ToArray(),
-                            Length = headerImage.Length,
-                            ContentType = headerImage.ContentType
-                        };
+                        await _postRepository.ExecuteAsync(
+                            new UpdatePostCommand(_context)
+                            {
+                                Id = post.Id,
+                                Title = post.Title,
+                                Summary = post.Summary,
+                                Content = post.Content,
+                                PublishedDateTime = post.PublishedDateTime,
+                                AuthorId = post.AuthorId,
+                                BlogId = post.BlogId,
+                                CategoryId = post.CategoryId,
+                                TagIds = post.TagIds,
+                                CreatedAt = post.CreatedAt,
+                                Timestamp = post.Timestamp
+                            });
+                        return RedirectToAction("Index");
                     }
 
-                    var transactions = new TransactionScope();
-                    try
+                    MemoryStream ms = new MemoryStream();
+                    headerImage.OpenReadStream().CopyTo(ms);
+
+                    file = new Models.File()
                     {
+                        Id = post.FileId,
+                        Name = headerImage.Name,
+                        FileName = Path.GetFileName(headerImage.FileName),
+                        Content = ms.ToArray(),
+                        Length = headerImage.Length,
+                        ContentType = headerImage.ContentType
+                    };
+
                         if (file != null)
                         {
                             transactions.Transactions.Add(_filesContext.Database.BeginTransaction());
@@ -443,15 +475,12 @@ namespace MasteringEFCore.Concurrencies.Final.Controllers
                                 BlogId = post.BlogId,
                                 CategoryId = post.CategoryId,
                                 TagIds = post.TagIds,
+                                CreatedAt = post.CreatedAt,
+                                Timestamp = post.Timestamp,
                                 FileId = file.Id
                             });
-                        transactions.Commit();
-                    }
-                    catch (Exception exception)
-                    {
-                        transactions.Rollback();
-                        ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
-                    }
+                    transactions.Commit();
+                    return RedirectToAction("Index");
                 }
                 catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
                 {
@@ -461,29 +490,31 @@ namespace MasteringEFCore.Concurrencies.Final.Controllers
                     }
                     else
                     {
-                        var transactions = new TransactionScope();
                         try
                         {
+                            #region User specific custom resolution
                             foreach (var entry in dbUpdateConcurrencyException.Entries)
                             {
                                 if (entry.Entity is Post)
                                 {
-                                    var postToBeUpdated = await _postRepository.GetSingleAsync(
-                                        new GetPostByIdQuery(_context) { Id = ((Post)entry.Entity).Id }
-                                        );
-                                    var postFromDatabase = _context.Entry(postToBeUpdated);
+                                    var postEntry = entry.GetDatabaseValues();
+                                    var postFromDatabase = (Post)postEntry.ToObject();
+                                    var postToBeUpdated = (Post)entry.Entity;
 
-                                    foreach (var property in entry.Metadata.GetProperties())
+                                    if (postFromDatabase.Title != postToBeUpdated.Title)
                                     {
-                                        var proposedValue = entry.Property(property.Name).CurrentValue;
-                                        var originalValue = entry.Property(property.Name).OriginalValue;
-                                        var databaseValue = postFromDatabase.Property(property.Name).CurrentValue;
-
-                                        // entry.Property(property.Name).CurrentValue = <value to be saved>;
-
-                                        // Update original values to
-                                        entry.Property(property.Name).OriginalValue = postFromDatabase.Property(property.Name).CurrentValue;
+                                        ModelState.AddModelError("Title", $"Current value: {postFromDatabase.Title}");
                                     }
+                                    if (postFromDatabase.Content != postToBeUpdated.Content)
+                                    {
+                                        ModelState.AddModelError("Content", $"Current value: {postFromDatabase.Content}");
+                                    }
+                                    ModelState.AddModelError(string.Empty, "The record was modified by another user" +
+                                        " after the page was loaded. The save operation was canceled and the" +
+                                        " updated database values were displayed. If you still want to edit" +
+                                        " this record, click the Save button again.");
+                                    post.Timestamp = (byte[])postFromDatabase.Timestamp;
+                                    ModelState.Remove("Timestamp");
                                 }
                                 else if (entry.Entity is Models.File)
                                 {
@@ -492,62 +523,34 @@ namespace MasteringEFCore.Concurrencies.Final.Controllers
                                         );
                                     var fileFromDatabase = _context.Entry(fileToBeUpdated);
 
-                                    #region Tracking changes in columns and storing respective data
-                                    foreach (var property in entry.Metadata.GetProperties())
-                                    {
-                                        var proposedValue = entry.Property(property.Name).CurrentValue;
-                                        var originalValue = entry.Property(property.Name).OriginalValue;
-                                        var databaseValue = fileFromDatabase.Property(property.Name).CurrentValue;
-
-                                        if (property.Name.Equals("Timestamp"))
-                                        {
-                                            entry.Property(property.Name).OriginalValue = fileFromDatabase.Property(property.Name).CurrentValue;
-                                        }
-
-                                        if (originalValue.Equals(databaseValue) && !proposedValue.Equals(originalValue))
-                                        {
-                                            // If the changes from database and original are same, 
-                                            // then we will save the entity with proposed value.
-                                            // It means another user had updated the column 
-                                            // the latest change from datastore will be retained
-                                            entry.Property(property.Name).CurrentValue = proposedValue;
-                                        }
-                                        else if (!originalValue.Equals(databaseValue) && proposedValue.Equals(originalValue))
-                                        {
-                                            // If the proposed value and original value are same,
-                                            // then we will update the entity with the database value
-                                            // It means the current user from application\UI had updated 
-                                            // the column and we were retaining it
-                                            entry.Property(property.Name).CurrentValue = databaseValue;
-                                        }
-                                        else if (!originalValue.Equals(databaseValue) && !proposedValue.Equals(originalValue))
-                                        {
-                                            // Latest changes from application\UI will be persisted, optimistic concurrency
-                                            entry.Property(property.Name).CurrentValue = proposedValue;
-
-                                            // Ignoring the latest changes from application\UI, pessimistic concurrency
-                                        }
-                                    }
-                                    #endregion
-
-                                    #region Configure EF Core to ignore any changes from the app\ui and retain data from datastore
-                                    #endregion
+                                    // Handle File concurrency conflicts
                                 }
                                 else
                                 {
                                     throw new NotSupportedException("Don't know how to handle concurrency conflicts for " + entry.Metadata.Name);
                                 }
                             }
-                            transactions.Commit();
+                            #endregion
+
+                            #region Client Wins
+                            //var entry = dbUpdateConcurrencyException.Entries.Single();
+                            //entry.OriginalValues.SetValues(entry.GetDatabaseValues());
+                            //await _context.SaveChangesAsync();
+                            //return RedirectToAction("Index");
+                            #endregion
+
+                            #region Database Wins
+                            //dbUpdateConcurrencyException.Entries.Single().Reload();
+                            //await _context.SaveChangesAsync();
+                            //return RedirectToAction("Index");
+                            #endregion
                         }
                         catch (Exception exception)
                         {
-                            transactions.Rollback();
                             ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
                         }
                     }
                 }
-                return RedirectToAction("Index");
             }
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", post.AuthorId);
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Url", post.BlogId);

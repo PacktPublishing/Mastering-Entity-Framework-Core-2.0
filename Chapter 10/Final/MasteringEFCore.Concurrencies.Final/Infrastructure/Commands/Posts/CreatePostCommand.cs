@@ -44,6 +44,8 @@ namespace MasteringEFCore.Concurrencies.Final.Infrastructure.Commands.Posts
                     PublishedDateTime = PublishedDateTime,
                     CreatedAt = DateTime.Now,
                     CreatedBy = AuthorId,
+                    ModifiedAt = DateTime.Now,
+                    ModifiedBy = AuthorId,
                     Url = Title.Generate(),
                     FileId = FileId
                 };
@@ -84,6 +86,8 @@ namespace MasteringEFCore.Concurrencies.Final.Infrastructure.Commands.Posts
                     PublishedDateTime = PublishedDateTime,
                     CreatedAt = DateTime.Now,
                     CreatedBy = AuthorId,
+                    ModifiedAt = DateTime.Now,
+                    ModifiedBy = AuthorId,
                     Url = Title.Generate(),
                     FileId = FileId
                 };

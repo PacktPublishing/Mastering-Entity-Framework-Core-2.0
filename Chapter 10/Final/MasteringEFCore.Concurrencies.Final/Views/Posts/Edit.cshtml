@@ -11,7 +11,10 @@
         <h4>Post</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="CreatedAt" />
+        <input type="hidden" asp-for="ModifiedAt" />
+        <input type="hidden" asp-for="Timestamp" />
         <div class="form-group">
             <label asp-for="Title" class="col-md-2 control-label"></label>
             <div class="col-md-10">
@@ -70,20 +73,6 @@
             <div class="col-md-10">
                 <input asp-for="VisitorCount" class="form-control" />
                 <span asp-validation-for="VisitorCount" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="CreatedAt" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="CreatedAt" class="form-control datepicker" />
-                <span asp-validation-for="CreatedAt" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="ModifiedAt" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="ModifiedAt" class="form-control datepicker" />
-                <span asp-validation-for="ModifiedAt" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">

@@ -37,7 +37,7 @@ namespace MasteringEFCore.Concurrencies.Final.Models
         [Required(ErrorMessage = "Person is required")]
         public int PersonId { get; set; }
         public Person Person { get; set; }
-        [Timestamp]
-        public byte[] Timestamp { get; set; }
+        //[Timestamp]
+        //public byte[] Timestamp { get; set; }
     }
 }

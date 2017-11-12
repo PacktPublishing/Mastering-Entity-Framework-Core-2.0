@@ -137,6 +137,7 @@ namespace MasteringEFCore.Concurrencies.Final.Controllers
             {
                 return NotFound();
             }
+            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name", blog.CategoryId);
             return View(blog);
         }
 
@@ -146,7 +147,7 @@ namespace MasteringEFCore.Concurrencies.Final.Controllers
         [HttpPost]
         [Route("Edit/{id:int?}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Url")] Blog blog)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Url,Title,Subtitle,Description,CategoryId")] Blog blog)
         {
             if (id != blog.Id)
             {
@@ -157,8 +158,31 @@ namespace MasteringEFCore.Concurrencies.Final.Controllers
             {
                 try
                 {
-                    _context.Update(blog);
-                    await _context.SaveChangesAsync();
+                    using (var transaction = _context.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            var blogToUpdate = await _context.Blogs.FromSql($"Select * from dbo.Blog with (xlock) where id={id}")
+                                .FirstOrDefaultAsync();
+
+                            if (blogToUpdate == null)
+                                return NotFound();
+
+                            blogToUpdate.Title = blog.Title;
+                            blogToUpdate.Subtitle = blog.Subtitle;
+                            blogToUpdate.Description = blog.Description;
+                            blogToUpdate.CategoryId = blog.CategoryId;
+                            blogToUpdate.Url = blog.Url;
+                            blogToUpdate.ModifiedAt = DateTime.Now;
+                            _context.Update(blogToUpdate);
+                            await _context.SaveChangesAsync();
+                            transaction.Commit();
+                        }
+                        catch (Exception)
+                        {
+                            transaction.Rollback();
+                        }
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -173,6 +197,7 @@ namespace MasteringEFCore.Concurrencies.Final.Controllers
                 }
                 return RedirectToAction("Index");
             }
+            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name", blog.CategoryId);
             return View(blog);
         }
 
