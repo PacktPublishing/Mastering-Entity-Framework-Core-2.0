@@ -1,0 +1,13 @@
+@model IEnumerable<MasteringEFCore.Performance.Final.Models.Post>
+
+    <h2>Recent Posts</h2>
+    <ul>
+        @foreach (var post in Model)
+        {
+            <li>
+                <a asp-controller="Posts"
+                   asp-action="Display"
+                   asp-route-id="@post.Url">@post.Title</a>
+            </li>
+        }
+    </ul>

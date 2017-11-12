@@ -1,0 +1,123 @@
+@model MasteringEFCore.Performance.Final.Models.Post
+
+@{
+    ViewData["Title"] = "Display";
+    Layout = "_BlogLayout";
+}
+
+<div class="row">
+    <div class="col-sm-8 blog-main">
+        <div class="blog-post">
+            <div class="blog-header">
+                <h1 class="blog-title">@Model.Title</h1>
+                <p class="lead blog-description">@Model.CreatedAt.ToString("MMMM dd, yyyy") by <a href="#">@Model.Author.DisplayName</a></p>
+            </div>
+            <p>@Model.Content</p>
+        </div>
+    </div>
+</div>
+<hr />
+<vc:add-comment post-id="@Model.Id"></vc:add-comment>
+<hr />
+<div id="commentsList">
+    <vc:comments-list post-id="@Model.Id"></vc:comments-list>
+</div>
+
+@*<h2>Display</h2>
+
+    <div>
+        <h4>Post</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Title)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Title)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Content)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Content)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Summary)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Summary)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.PublishedDateTime)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PublishedDateTime)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Url)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Url)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.VisitorCount)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.VisitorCount)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.CreatedAt)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.ModifiedAt)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ModifiedAt)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.CreatedBy)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.ModifiedBy)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ModifiedBy)
+            </dd>
+            @if (!Model.FileId.Equals(Guid.Empty))
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.FileId)
+                </dt>
+                <dd>
+                    <a asp-controller="Files" asp-action="Get" asp-route-id="@Model.FileId">@Model.FileName</a>
+                </dd>
+            }
+            <dt>
+                @Html.DisplayNameFor(model => model.Author)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Author.DisplayName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Blog)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Blog.Subtitle)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Category)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Category.Name)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <a asp-controller="Home" asp-action="Index">Back to Home</a>
+    </div>*@
