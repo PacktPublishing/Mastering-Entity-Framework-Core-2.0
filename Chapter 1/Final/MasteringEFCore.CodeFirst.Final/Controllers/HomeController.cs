@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MasteringEFCore.CodeFirst.Final.Models;
 
 namespace MasteringEFCore.CodeFirst.Final.Controllers
 {
@@ -29,7 +31,7 @@ namespace MasteringEFCore.CodeFirst.Final.Controllers
 
         public IActionResult Error()
         {
-            return View();
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

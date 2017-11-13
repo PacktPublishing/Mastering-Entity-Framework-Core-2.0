@@ -9,7 +9,6 @@ namespace MasteringEFCore.CodeFirst.Final.Models
     {
         public int Id { get; set; }
         public string Url { get; set; }
-
         public ICollection<Post> Posts { get; set; }
     }
 }

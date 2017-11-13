@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,7 +16,7 @@ namespace MasteringEFCore.CodeFirst.Final.Controllers
 
         public BlogsController(BlogContext context)
         {
-            _context = context;    
+            _context = context;
         }
 
         // GET: Blogs
@@ -60,7 +60,7 @@ namespace MasteringEFCore.CodeFirst.Final.Controllers
             {
                 _context.Add(blog);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             return View(blog);
         }
@@ -111,7 +111,7 @@ namespace MasteringEFCore.CodeFirst.Final.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             return View(blog);
         }
@@ -142,7 +142,7 @@ namespace MasteringEFCore.CodeFirst.Final.Controllers
             var blog = await _context.Blogs.SingleOrDefaultAsync(m => m.Id == id);
             _context.Blogs.Remove(blog);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
 
         private bool BlogExists(int id)
