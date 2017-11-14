@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using MasteringEFCore.CodeFirst.Final.Data;
+using MasteringEFCore.CodeFirst.Final.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using MasteringEFCore.CodeFirst.Final.Data;
-using MasteringEFCore.CodeFirst.Final.Models;
 
 namespace MasteringEFCore.CodeFirst.Final.Controllers
 {
@@ -50,7 +47,7 @@ namespace MasteringEFCore.CodeFirst.Final.Controllers
         }
 
         // POST: Blogs/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -82,7 +79,7 @@ namespace MasteringEFCore.CodeFirst.Final.Controllers
         }
 
         // POST: Blogs/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]

@@ -1,5 +1,3 @@
-using System;
-
 namespace MasteringEFCore.CodeFirst.Final.Models
 {
     public class ErrorViewModel

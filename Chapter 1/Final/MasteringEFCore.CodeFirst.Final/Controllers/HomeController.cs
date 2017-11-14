@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using MasteringEFCore.CodeFirst.Final.Models;
 using Microsoft.AspNetCore.Mvc;
-using MasteringEFCore.CodeFirst.Final.Models;
+using System.Diagnostics;
 
 namespace MasteringEFCore.CodeFirst.Final.Controllers
 {
