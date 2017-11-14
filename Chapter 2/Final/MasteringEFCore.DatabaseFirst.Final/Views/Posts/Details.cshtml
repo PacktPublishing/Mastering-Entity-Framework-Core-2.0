@@ -1,11 +1,8 @@
-@model MasteringEFCore.DatabaseFirst.Final.Models.Post
-
+﻿@model MasteringEFCore.DatabaseFirst.Final.Models.Post
 @{
     ViewData["Title"] = "Details";
 }
-
 <h2>Details</h2>
-
 <div>
     <h4>Post</h4>
     <hr />
@@ -32,7 +29,7 @@
             @Html.DisplayNameFor(model => model.Blog)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Blog.Id)
+            @Html.DisplayFor(model => model.Blog.Url)
         </dd>
     </dl>
 </div>

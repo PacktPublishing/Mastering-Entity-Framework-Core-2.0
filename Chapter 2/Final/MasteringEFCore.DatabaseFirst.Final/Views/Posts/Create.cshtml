@@ -1,55 +1,42 @@
-@model MasteringEFCore.DatabaseFirst.Final.Models.Post
-
+﻿@model MasteringEFCore.DatabaseFirst.Final.Models.Post
 @{
     ViewData["Title"] = "Create";
 }
-
 <h2>Create</h2>
-
-<form asp-action="Create">
-    <div class="form-horizontal">
-        <h4>Post</h4>
-        <hr />
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-            <label asp-for="BlogId" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <select asp-for="BlogId" class ="form-control" asp-items="ViewBag.BlogId"></select>
+<h4>Post</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="BlogId" class="control-label"></label>
+                <select asp-for="BlogId" class="form-control" asp-items="ViewBag.BlogId"></select>
             </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Content" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
+            <div class="form-group">
+                <label asp-for="Content" class="control-label"></label>
                 <input asp-for="Content" class="form-control" />
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="PublishedDateTime" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
+            <div class="form-group">
+                <label asp-for="PublishedDateTime" class="control-label"></label>
                 <input asp-for="PublishedDateTime" class="form-control" />
                 <span asp-validation-for="PublishedDateTime" class="text-danger"></span>
             </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Title" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
-        </div>
+        </form>
     </div>
-</form>
-
+</div>
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

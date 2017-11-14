@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace MasteringEFCore.DatabaseFirst.Final.Models
 {
@@ -11,6 +10,6 @@ namespace MasteringEFCore.DatabaseFirst.Final.Models
         public DateTime PublishedDateTime { get; set; }
         public string Title { get; set; }
 
-        public virtual Blog Blog { get; set; }
+        public Blog Blog { get; set; }
     }
 }

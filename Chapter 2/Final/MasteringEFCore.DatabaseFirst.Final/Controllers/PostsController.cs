@@ -1,11 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using MasteringEFCore.DatabaseFirst.Final.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MasteringEFCore.DatabaseFirst.Final.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MasteringEFCore.DatabaseFirst.Final.Controllers
 {
@@ -15,7 +13,7 @@ namespace MasteringEFCore.DatabaseFirst.Final.Controllers
 
         public PostsController(MasteringEFCoreDbFirstContext context)
         {
-            _context = context;    
+            _context = context;
         }
 
         // GET: Posts
@@ -52,7 +50,7 @@ namespace MasteringEFCore.DatabaseFirst.Final.Controllers
         }
 
         // POST: Posts/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -62,7 +60,7 @@ namespace MasteringEFCore.DatabaseFirst.Final.Controllers
             {
                 _context.Add(post);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             ViewData["BlogId"] = new SelectList(_context.Blog, "Id", "Url", post.BlogId);
             return View(post);
@@ -86,7 +84,7 @@ namespace MasteringEFCore.DatabaseFirst.Final.Controllers
         }
 
         // POST: Posts/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -115,7 +113,7 @@ namespace MasteringEFCore.DatabaseFirst.Final.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             ViewData["BlogId"] = new SelectList(_context.Blog, "Id", "Url", post.BlogId);
             return View(post);
@@ -148,7 +146,7 @@ namespace MasteringEFCore.DatabaseFirst.Final.Controllers
             var post = await _context.Post.SingleOrDefaultAsync(m => m.Id == id);
             _context.Post.Remove(post);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
 
         private bool PostExists(int id)
