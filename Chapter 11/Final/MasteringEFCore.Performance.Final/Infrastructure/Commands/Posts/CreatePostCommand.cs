@@ -53,6 +53,7 @@ namespace MasteringEFCore.Performance.Final.Infrastructure.Commands.Posts
                 Context.Add(post);
                 returnValue = Context.SaveChanges();
 
+                Context.ChangeTracker.AutoDetectChangesEnabled = false;
                 foreach (int tagId in TagIds)
                 {
                     Context.Add(new TagPost
@@ -61,6 +62,7 @@ namespace MasteringEFCore.Performance.Final.Infrastructure.Commands.Posts
                         Post = post
                     });
                 }
+                Context.ChangeTracker.AutoDetectChangesEnabled = true;
                 returnValue = Context.SaveChanges();
             }
             catch (Exception exception)
@@ -95,6 +97,7 @@ namespace MasteringEFCore.Performance.Final.Infrastructure.Commands.Posts
                 Context.Add(post);
                 returnValue = await Context.SaveChangesAsync();
 
+                Context.ChangeTracker.AutoDetectChangesEnabled = false;
                 foreach (int tagId in TagIds)
                 {
                     Context.Add(new TagPost
@@ -104,6 +107,7 @@ namespace MasteringEFCore.Performance.Final.Infrastructure.Commands.Posts
                     });
                 }
 
+                Context.ChangeTracker.AutoDetectChangesEnabled = true;
                 returnValue = await Context.SaveChangesAsync();
             }
             catch (Exception exception)

@@ -1,4 +1,4 @@
-@model IEnumerable<MasteringEFCore.Performance.Final.Models.Person>
+@model IEnumerable<MasteringEFCore.Performance.Final.ViewModels.PersonViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,22 +13,25 @@
     <thead>
         <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.FirstName)
+                    @Html.DisplayNameFor(model => model.Person.FirstName)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.LastName)
+                    @Html.DisplayNameFor(model => model.Person.LastName)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.NickName)
+                    @Html.DisplayNameFor(model => model.Person.NickName)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Url)
+                    @Html.DisplayNameFor(model => model.Person.Url)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Biography)
+                    @Html.DisplayNameFor(model => model.Person.Biography)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.ImageUrl)
+                    @Html.DisplayNameFor(model => model.Person.ImageUrl)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NoOfComments)
                 </th>
             <th></th>
         </tr>
@@ -37,27 +40,30 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
+                @Html.DisplayFor(modelItem => item.Person.FirstName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LastName)
+                @Html.DisplayFor(modelItem => item.Person.LastName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.NickName)
+                @Html.DisplayFor(modelItem => item.Person.NickName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Url)
+                @Html.DisplayFor(modelItem => item.Person.Url)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Biography)
+                @Html.DisplayFor(modelItem => item.Person.Biography)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ImageUrl)
+                @Html.DisplayFor(modelItem => item.Person.ImageUrl)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @Html.DisplayFor(modelItem => item.NoOfComments)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Person.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Person.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Person.Id">Delete</a>
             </td>
         </tr>
 }

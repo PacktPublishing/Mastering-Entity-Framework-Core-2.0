@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -24,6 +25,7 @@ namespace MasteringEFCore.Performance.Final.Models
         public string ImageUrl { get; set; }
         [Phone(ErrorMessage = "Provide a valid phone number")]
         [DataType(DataType.PhoneNumber)]
+        [MaxLength(12)]
         public string PhoneNumber { get; set; }
         public DateTime? CreatedAt { get; set; }
         //[ConcurrencyCheck]
@@ -34,7 +36,7 @@ namespace MasteringEFCore.Performance.Final.Models
         public int? UserId { get; set; }
         public User User { get; set; }
         [JsonIgnore]
-        public ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
         //[Timestamp]
         //public byte[] Timestamp { get; set; }
     }

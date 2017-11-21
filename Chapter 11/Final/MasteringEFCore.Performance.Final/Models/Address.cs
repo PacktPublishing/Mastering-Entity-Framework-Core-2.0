@@ -20,6 +20,8 @@ namespace MasteringEFCore.Performance.Final.Models
         public string State { get; set; }
         [Required(ErrorMessage = "Country is required")]
         public string Country { get; set; }
+        [MaxLength(6)]
+        public string ZipCode { get; set; }
         public string LatitudeLongitude { get; set; }
         [Required(ErrorMessage = "User is required")]
         public int UserId { get; set; }

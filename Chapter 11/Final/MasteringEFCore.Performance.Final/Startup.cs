@@ -40,6 +40,7 @@ namespace MasteringEFCore
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<IFileRepository, FileRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
+            services.AddScoped<IPersonRepository, PersonRepository>();
             services.AddMvc().AddJsonOptions(options =>
             {
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
