@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MasteringEFCore.Relationship.Final.Models
 {
@@ -19,11 +18,13 @@ namespace MasteringEFCore.Relationship.Final.Models
         public int CreatedBy { get; set; }
         public int ModifiedBy { get; set; }
         public int BlogId { get; set; }
+
         //public int BlogSomeId { get; set; }
         //[ForeignKey("BlogSomeId")]
         //public int SomeBlogId { get; set; }
         //public Blog SomeBlog { get; set; }
         public Blog Blog { get; set; }
+
         public int AuthorId { get; set; }
         public User Author { get; set; }
         public int CategoryId { get; set; }
