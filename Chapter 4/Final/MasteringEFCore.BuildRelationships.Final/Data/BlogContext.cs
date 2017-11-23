@@ -39,6 +39,10 @@ namespace MasteringEFCore.BuildRelationships.Final.Data
                 .HasOne(x => x.Post)
                 .WithMany(x => x.TagPosts)
                 .HasForeignKey(x => x.PostId);
+            modelBuilder.Entity<Post>()
+                .HasOne(x => x.Blog)
+                .WithMany(x => x.Posts)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
