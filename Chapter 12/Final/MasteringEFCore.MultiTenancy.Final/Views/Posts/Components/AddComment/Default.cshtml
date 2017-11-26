@@ -1,0 +1,57 @@
+@model MasteringEFCore.MultiTenancy.Final.ViewModels.CommentViewModel
+
+<div class="card my-4">
+    <h5 class="card-header">Leave a Comment:</h5>
+    <div class="card-body">
+        <form id="addPostCommentForm">
+            <input id="postId" type="hidden" asp-for="PostId" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Content" class="col-md-2 control-label"></label>
+                <textarea id="content" class="form-control" asp-for="Content" rows="3"></textarea>
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nickname" class="col-md-2 control-label"></label>
+                <input id="nickname" asp-for="Nickname" class="form-control" />
+                    <span asp-validation-for="Nickname" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary" onclick="return false;" id="addPostComment">Add Comment</button>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript" defer src="~/js/components/comments/addComment.js"></script>
+
+
+@*<script type="text/javascript" defer>
+    $(document).ready(function () {
+    $('#addPostComment').click(function () {
+        var comment =
+            {
+                "PostId": $('#postId').val(),
+                "Content": $('#content').val(),
+                "Person.FirstName": $('#firstName').val(),
+                "Person.LastName": $('#lastName').val()
+            };
+
+        var data = JSON.stringify(comment);
+
+        $.ajax({
+            url: '@Url.Action("CreatePostComment", "Comments")',
+            async: true,
+            processData: false,
+            data: data,
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                alert("Comment saved successfully.")
+            },
+            error: function (xhr, param) {
+                console.log(xhr);
+                console.log(param);
+            }
+        });
+    });
+});
+</script>*@
