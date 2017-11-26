@@ -12,7 +12,7 @@ using MasteringEFCore.MultiTenancy.Final.ViewModels;
 
 namespace MasteringEFCore.MultiTenancy.Final.Controllers
 {
-    //[Authorize(Roles = "Administrators")]
+    [Authorize]
     public class PeopleController : Controller
     {
         private readonly BlogContext _context;

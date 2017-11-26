@@ -17,6 +17,7 @@ namespace MasteringEFCore.MultiTenancy.Final.Data
             
         }
 
+        public DbSet<Tenant> Tenants { get; set; }
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<User> Users { get; set; }
@@ -26,45 +27,6 @@ namespace MasteringEFCore.MultiTenancy.Final.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Person> People { get; set; }
-
-        //public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
-        //{
-        //    ChangeTracker.DetectChanges();
-        //    var now = DateTime.UtcNow;
-
-        //    foreach (var item in ChangeTracker.Entries<Post>().Where(e => e.State == EntityState.Added))
-        //    {
-        //        item.Property("CreatedAt").CurrentValue = now;
-        //        item.Property("ModifiedAt").CurrentValue = now;
-        //    }
-
-        //    foreach (var item in ChangeTracker.Entries<Post>().Where(e => e.State == EntityState.Modified))
-        //    {
-        //        item.Property("ModifiedAt").CurrentValue = now;
-        //    }
-
-        //    return await base.SaveChangesAsync(cancellationToken);
-        //}
-
-        //public override int SaveChanges()
-        //{
-        //    ChangeTracker.DetectChanges();
-        //    var now = DateTime.UtcNow;
-
-        //    foreach (var item in ChangeTracker.Entries<Post>().Where(e => e.State == EntityState.Added))
-        //    {
-        //        item.Property("CreatedAt").CurrentValue = now;
-        //        item.Property("ModifiedAt").CurrentValue = now;
-        //    }
-
-        //    foreach (var item in ChangeTracker.Entries<Post>().Where(e => e.State == EntityState.Modified))
-        //    {
-        //        item.Property("ModifiedAt").CurrentValue = now;
-        //    }
-
-
-        //    return base.SaveChanges();
-        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

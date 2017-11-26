@@ -13,7 +13,7 @@ using MasteringEFCore.MultiTenancy.Final.Extensions;
 
 namespace MasteringEFCore.MultiTenancy.Final.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("Admin/Blogs")]
     public class BlogsController : Controller
     {
@@ -30,7 +30,7 @@ namespace MasteringEFCore.MultiTenancy.Final.Controllers
             return View(await _context.Blogs.FromSql("Select * from dbo.Blog").ToListAsync());
             //return View(await _context.Blogs.FromSql("Select [Id],[Title],[Subtitle],[Description],[Url] from dbo.Blog").ToListAsync());
         }
-
+        
         [Route("LatestBlogs")]
         public async Task<IActionResult> LatestBlogs()
         {

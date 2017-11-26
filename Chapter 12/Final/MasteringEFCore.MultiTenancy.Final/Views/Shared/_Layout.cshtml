@@ -37,8 +37,8 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    @*@if (await AuthorizationService.AuthorizeAsync(User, "Administrators"))
-                    {*@
+                    @if(User.Identity.IsAuthenticated) 
+                    {
                         <li class="dropdown" asp-sh>
                             <a href="#"class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin<span class="caret"></span></a>
 
@@ -56,11 +56,32 @@
                             </ul>
 
                         </li>
-                    @*}*@
+                    }
                     <li><a asp-area="" asp-controller="Posts" asp-action="GetPostsBlogHome" asp-route-pageNumber="1" asp-route-pageCount="10">Blog</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                 </ul>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <ul class="nav navbar-nav navbar-right">
+                            <li>
+                                <a href="#">Hello @User.Identity.Name!</a>
+                            </li>
+                            <li><a asp-area="" asp-controller="Account" asp-action="Logout">Log Out</a></li>
+                        </ul>
+                    }
+                }
+                else
+                {
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
+                        <li><a asp-area="" asp-controller="Account" asp-action="Login">Log In</a></li>
+                    </ul>
+                }
             </div>
         </div>
     </nav>

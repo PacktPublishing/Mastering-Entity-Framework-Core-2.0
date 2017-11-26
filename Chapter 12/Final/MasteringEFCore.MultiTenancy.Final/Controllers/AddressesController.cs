@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace MasteringEFCore.MultiTenancy.Final.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class AddressesController : Controller
     {
         private readonly BlogContext _context;

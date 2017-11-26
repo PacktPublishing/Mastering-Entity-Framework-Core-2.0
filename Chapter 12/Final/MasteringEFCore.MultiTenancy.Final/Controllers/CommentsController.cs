@@ -15,14 +15,14 @@ using MasteringEFCore.MultiTenancy.Final.ViewModels;
 
 namespace MasteringEFCore.MultiTenancy.Final.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class CommentsController : Controller
     {
         private readonly BlogContext _context;
-        private readonly IConfigurationRoot _configuration;
+        private readonly IConfiguration _configuration;
         private readonly ICommentRepository _repository;
 
-        public CommentsController(IConfigurationRoot configuration, BlogContext context, ICommentRepository repository)
+        public CommentsController(IConfiguration configuration, BlogContext context, ICommentRepository repository)
         {
             _context = context;
             _repository = repository;

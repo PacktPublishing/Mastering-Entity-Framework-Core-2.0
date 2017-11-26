@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MasteringEFCore.MultiTenancy.Final.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MasteringEFCore.MultiTenancy.Final.Controllers
 {

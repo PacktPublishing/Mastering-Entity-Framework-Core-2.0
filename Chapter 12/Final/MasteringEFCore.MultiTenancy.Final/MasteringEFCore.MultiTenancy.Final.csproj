@@ -32,8 +32,6 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\Account\" />
-    <Folder Include="Views\Account\" />
     <Folder Include="Views\Posts\Components\CommentsList\" />
     <Folder Include="Views\Posts\Components\AddComment\" />
     <Folder Include="Views\Shared\Components\RecentPosts\" />

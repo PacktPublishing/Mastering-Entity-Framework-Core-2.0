@@ -13,7 +13,7 @@ using MasteringEFCore.MultiTenancy.Final.Helpers;
 
 namespace MasteringEFCore.MultiTenancy.Final.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class UsersController : Controller
     {
         private readonly BlogContext _context;

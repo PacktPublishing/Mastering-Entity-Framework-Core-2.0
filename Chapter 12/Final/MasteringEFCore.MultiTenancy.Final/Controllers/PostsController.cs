@@ -22,7 +22,7 @@ using MasteringEFCore.MultiTenancy.Final.Infrastructure.Queries.Files;
 
 namespace MasteringEFCore.MultiTenancy.Final.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("Admin/Posts")]
     public class PostsController : Controller
     {
@@ -63,6 +63,7 @@ namespace MasteringEFCore.MultiTenancy.Final.Controllers
             return View(posts);
         }
 
+        [AllowAnonymous]
         [Route("~/blog")]
         public async Task<IActionResult> GetPostsBlogHome(int pageNumber, int pageCount)
         {
@@ -161,6 +162,7 @@ namespace MasteringEFCore.MultiTenancy.Final.Controllers
             return Ok(results);
         }
 
+        [AllowAnonymous]
         [Route("~/Posts/Display")]
         public async Task<IActionResult> Display(string id)
         {
