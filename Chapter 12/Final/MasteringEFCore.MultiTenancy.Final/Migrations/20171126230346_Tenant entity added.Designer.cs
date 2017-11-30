@@ -11,9 +11,10 @@ using System;
 namespace MasteringEFCore.MultiTenancy.Final.Migrations
 {
     [DbContext(typeof(BlogContext))]
-    partial class BlogContextModelSnapshot : ModelSnapshot
+    [Migration("20171126230346_Tenant entity added")]
+    partial class Tenantentityadded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -81,8 +82,6 @@ namespace MasteringEFCore.MultiTenancy.Final.Migrations
 
                     b.Property<string>("Subtitle")
                         .IsRequired();
-
-                    b.Property<Guid>("TenantId");
 
                     b.Property<string>("Title")
                         .IsRequired();
@@ -188,17 +187,11 @@ namespace MasteringEFCore.MultiTenancy.Final.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(12);
 
-                    b.Property<Guid?>("TenantId");
-
                     b.Property<string>("Url");
 
                     b.Property<int?>("UserId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("TenantId")
-                        .IsUnique()
-                        .HasFilter("[TenantId] IS NOT NULL");
 
                     b.ToTable("Person");
                 });
@@ -230,8 +223,6 @@ namespace MasteringEFCore.MultiTenancy.Final.Migrations
                     b.Property<DateTime>("PublishedDateTime");
 
                     b.Property<string>("Summary");
-
-                    b.Property<Guid>("TenantId");
 
                     b.Property<byte[]>("Timestamp")
                         .IsConcurrencyToken()
@@ -309,9 +300,11 @@ namespace MasteringEFCore.MultiTenancy.Final.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<int>("PersonId");
+                    b.Property<int?>("PersonId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PersonId");
 
                     b.ToTable("Tenants");
                 });
@@ -394,13 +387,6 @@ namespace MasteringEFCore.MultiTenancy.Final.Migrations
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("MasteringEFCore.MultiTenancy.Final.Models.Person", b =>
-                {
-                    b.HasOne("MasteringEFCore.MultiTenancy.Final.Models.Tenant", "Tenant")
-                        .WithOne("Person")
-                        .HasForeignKey("MasteringEFCore.MultiTenancy.Final.Models.Person", "TenantId");
-                });
-
             modelBuilder.Entity("MasteringEFCore.MultiTenancy.Final.Models.Post", b =>
                 {
                     b.HasOne("MasteringEFCore.MultiTenancy.Final.Models.User", "Author")
@@ -430,6 +416,13 @@ namespace MasteringEFCore.MultiTenancy.Final.Migrations
                         .WithMany("TagPosts")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MasteringEFCore.MultiTenancy.Final.Models.Tenant", b =>
+                {
+                    b.HasOne("MasteringEFCore.MultiTenancy.Final.Models.Person", "Person")
+                        .WithMany()
+                        .HasForeignKey("PersonId");
                 });
 
             modelBuilder.Entity("MasteringEFCore.MultiTenancy.Final.Models.User", b =>

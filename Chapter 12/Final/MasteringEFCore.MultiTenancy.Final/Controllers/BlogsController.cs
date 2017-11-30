@@ -10,6 +10,8 @@ using MasteringEFCore.MultiTenancy.Final.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Data.SqlClient;
 using MasteringEFCore.MultiTenancy.Final.Extensions;
+using MasteringEFCore.MultiTenancy.Final.Repositories;
+using MasteringEFCore.MultiTenancy.Final.Infrastructure.Queries.Users;
 
 namespace MasteringEFCore.MultiTenancy.Final.Controllers
 {
@@ -18,17 +20,32 @@ namespace MasteringEFCore.MultiTenancy.Final.Controllers
     public class BlogsController : Controller
     {
         private readonly BlogContext _context;
+        private readonly IUserRepository _userRepository;
 
-        public BlogsController(BlogContext context)
+        public BlogsController(BlogContext context, IUserRepository userRepository)
         {
-            _context = context;    
+            _context = context;
+            _userRepository = userRepository;
         }
 
         // GET: Blogs
         public async Task<IActionResult> Index()
         {
+            SetTenantId();
             return View(await _context.Blogs.FromSql("Select * from dbo.Blog").ToListAsync());
             //return View(await _context.Blogs.FromSql("Select [Id],[Title],[Subtitle],[Description],[Url] from dbo.Blog").ToListAsync());
+        }
+
+        private void SetTenantId()
+        {
+            if (this.User == null) return;
+            var person = _context.People.FirstOrDefault(item => item.User.Username.Equals(this.User.Identity.Name));
+            if (person != null)
+            {
+                _context.TenantId = person.TenantId.HasValue ? person.TenantId.Value : Guid.Empty;
+            }
+
+            return;
         }
         
         [Route("LatestBlogs")]

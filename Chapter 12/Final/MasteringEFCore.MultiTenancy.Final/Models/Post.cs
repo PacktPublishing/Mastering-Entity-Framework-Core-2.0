@@ -13,6 +13,7 @@ namespace MasteringEFCore.MultiTenancy.Final.Models
     public class Post
     {
         public int Id { get; set; }
+        public Guid TenantId { get; set; }
         [Required(ErrorMessage = "Title is required")]
         public string Title { get; set; }
         [Required(ErrorMessage = "Content is required")]

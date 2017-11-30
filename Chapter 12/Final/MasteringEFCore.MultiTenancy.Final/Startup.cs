@@ -33,7 +33,9 @@ namespace MasteringEFCore
             // Add framework services.
             services.AddSingleton(_ => Configuration);
             services.AddDbContext<BlogContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            }, ServiceLifetime.Scoped);
             services.AddDbContext<BlogFilesContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("FilesConnection")));
             services.AddScoped<IPostRepository, PostRepository>();

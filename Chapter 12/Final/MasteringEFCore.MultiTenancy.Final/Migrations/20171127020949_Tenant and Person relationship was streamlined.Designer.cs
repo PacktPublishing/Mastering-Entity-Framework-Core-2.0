@@ -11,9 +11,10 @@ using System;
 namespace MasteringEFCore.MultiTenancy.Final.Migrations
 {
     [DbContext(typeof(BlogContext))]
-    partial class BlogContextModelSnapshot : ModelSnapshot
+    [Migration("20171127020949_Tenant and Person relationship was streamlined")]
+    partial class TenantandPersonrelationshipwasstreamlined
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

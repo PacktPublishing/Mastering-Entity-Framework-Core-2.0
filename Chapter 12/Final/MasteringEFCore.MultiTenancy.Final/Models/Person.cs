@@ -35,6 +35,8 @@ namespace MasteringEFCore.MultiTenancy.Final.Models
 
         public int? UserId { get; set; }
         public User User { get; set; }
+        public Guid? TenantId { get; set; }
+        public Tenant Tenant { get; set; }
         [JsonIgnore]
         public virtual ICollection<Comment> Comments { get; set; }
         //[Timestamp]

@@ -17,6 +17,8 @@ namespace MasteringEFCore.MultiTenancy.Final.Data
             
         }
 
+        public Guid TenantId { get; set; }
+
         public DbSet<Tenant> Tenants { get; set; }
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Post> Posts { get; set; }
@@ -31,13 +33,17 @@ namespace MasteringEFCore.MultiTenancy.Final.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Blog>()
-                .ToTable("Blog");
-                //.Property(x => x.ModifiedAt)
-                //.IsConcurrencyToken();
+                .ToTable("Blog")
+                .HasQueryFilter(item => item.TenantId.Equals(TenantId));
+            //.Property(x => x.ModifiedAt)
+            //.IsConcurrencyToken();
             //modelBuilder.Entity<Blog>()
             //    .Property(p => p.Timestamp)
             //    .ValueGeneratedOnAddOrUpdate()
             //    .IsConcurrencyToken();
+            modelBuilder.Entity<Post>()
+                .ToTable("Post")
+                .HasQueryFilter(item => item.TenantId.Equals(TenantId));
             modelBuilder.Entity<Post>()
                 .ToTable("Post")
                 .HasOne(x=>x.Author)
@@ -152,6 +158,10 @@ namespace MasteringEFCore.MultiTenancy.Final.Data
             //    .Property(p => p.Timestamp)
             //    .ValueGeneratedOnAddOrUpdate()
             //    .IsConcurrencyToken();
+            modelBuilder.Entity<Tenant>()
+                .HasOne(x => x.Person)
+                .WithOne(x => x.Tenant)
+                .HasForeignKey<Person>(x => x.TenantId);
         }
     }
 }
