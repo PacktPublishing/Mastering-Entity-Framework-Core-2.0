@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace MasteringEFCore
 {
@@ -51,7 +53,13 @@ namespace MasteringEFCore
             })
             .AddCookie();
 
-            services.AddMvc().AddJsonOptions(options =>
+            services.AddMvc(configuration =>
+            {
+                var authorizationPolicy = new AuthorizationPolicyBuilder()
+                                .RequireAuthenticatedUser()
+                                .Build();
+                configuration.Filters.Add(new AuthorizeFilter(authorizationPolicy));
+            }).AddJsonOptions(options =>
             {
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                 options.SerializerSettings.ReferenceLoopHandling
