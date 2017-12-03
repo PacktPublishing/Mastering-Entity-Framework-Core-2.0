@@ -1,4 +1,5 @@
 ﻿using MasteringEFCore.Validations.Final.Models;
+using MasteringEFCore.Validations.Final.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -28,6 +29,11 @@ namespace MasteringEFCore.Validations.Final.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult Register()
+        {
+            return View(new RegistrationViewModel());
         }
     }
 }

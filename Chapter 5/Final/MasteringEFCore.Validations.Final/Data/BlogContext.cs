@@ -1,5 +1,6 @@
 ﻿using MasteringEFCore.Validations.Final.Models;
 using Microsoft.EntityFrameworkCore;
+using MasteringEFCore.Validations.Final.ViewModels;
 
 namespace MasteringEFCore.Validations.Final.Data
 {
@@ -44,5 +45,7 @@ namespace MasteringEFCore.Validations.Final.Data
                 .WithMany(x => x.Posts)
                 .OnDelete(DeleteBehavior.Cascade);
         }
+
+        public DbSet<MasteringEFCore.Validations.Final.ViewModels.RegistrationViewModel> RegistrationViewModel { get; set; }
     }
 }
