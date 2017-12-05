@@ -26,18 +26,7 @@ namespace MasteringEFCore.Performance.Final.Controllers
         // GET: People
         public async Task<IActionResult> Index()
         {
-            //var peopleViewModel = await _context.People
-            //    //.Include(item => item.Comments)
-            //    .AsNoTracking()
-            //    .Select(item =>
-            //    new PersonViewModel
-            //    {
-            //        Person = item,
-            //        NoOfComments = item.Comments.Count
-            //    }).ToListAsync();
-            var people = await _context.People
-                //.Include(item => item.Comments)
-                .AsNoTracking()
+            var people = await _context.People.Take(100)
                 .ToListAsync();
             var peopleViewModel = new List<PersonViewModel>();
             people.ForEach(item =>
@@ -187,6 +176,8 @@ namespace MasteringEFCore.Performance.Final.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            //var person = await _context.People.SingleOrDefaultAsync(m => m.Id == id);
+            //_context.People.Remove(person);
             Person person = new Person() { Id = id };
             _context.Entry(person).State = EntityState.Deleted;
             await _context.SaveChangesAsync();

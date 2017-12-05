@@ -8,9 +8,10 @@ using MasteringEFCore.Performance.Final.Data;
 namespace MasteringEFCore.Performance.Final.Migrations
 {
     [DbContext(typeof(BlogContext))]
-    partial class BlogContextModelSnapshot : ModelSnapshot
+    [Migration("20171203114738_adding person index")]
+    partial class addingpersonindex
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")

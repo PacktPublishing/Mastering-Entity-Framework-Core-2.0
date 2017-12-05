@@ -182,6 +182,9 @@ namespace MasteringEFCore.Performance.Final.Data
                 .HasOne(x=>x.User)
                 .WithOne(x=>x.Person)
                 .HasForeignKey<User>(x=>x.PersonId);
+
+            modelBuilder.Entity<Person>()
+                .HasIndex(p => new { p.FirstName, p.LastName });
             //modelBuilder.Entity<Person>()
             //    .ToTable("Person")
             //    .Property(x => x.ModifiedAt)

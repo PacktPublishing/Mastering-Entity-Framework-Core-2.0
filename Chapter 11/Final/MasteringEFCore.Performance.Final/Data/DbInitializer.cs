@@ -12,13 +12,12 @@ namespace MasteringEFCore.Performance.Final.Data
     {
         public static void Initialize(BlogContext context)
         {
+            context.Database.EnsureCreated();
+
             using (var transaction = context.Database.BeginTransaction())
             {
                 try
                 {
-
-                    context.Database.EnsureCreated();
-
                     // Look for any person.
                     if (context.People.Any())
                     {

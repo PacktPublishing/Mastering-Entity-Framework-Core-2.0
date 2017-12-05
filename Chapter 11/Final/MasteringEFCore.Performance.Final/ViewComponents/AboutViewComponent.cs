@@ -3,6 +3,7 @@ using MasteringEFCore.Performance.Final.Infrastructure.Queries.People;
 using MasteringEFCore.Performance.Final.Repositories;
 using MasteringEFCore.Performance.Final.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,9 +32,15 @@ namespace MasteringEFCore.Performance.Final.ViewComponents
             //    });
             //return View(user);
 
+            var person = _context.People
+                .AsNoTracking()
+                .FirstOrDefault(item => item.Id.Equals(id));
+
             var aboutViewModel = _context.People
+                .AsNoTracking()
                 //.Where(item => item.PhoneNumber.Equals("9876543210"))
-                .Where(item => item.Id.Equals(id))
+                .Where(item => item.FirstName.Equals(person.FirstName) 
+                    && item.LastName.Equals(person.LastName))
                 .Select(item => new AboutViewModel
                 {
                     Name = item.FirstName,
