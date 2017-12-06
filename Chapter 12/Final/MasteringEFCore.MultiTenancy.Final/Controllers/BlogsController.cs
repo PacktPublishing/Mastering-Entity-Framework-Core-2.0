@@ -131,6 +131,8 @@ namespace MasteringEFCore.MultiTenancy.Final.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Blog blog)
         {
+            SetTenantId();
+            blog.TenantId = _context.TenantId;
             if (ModelState.IsValid)
             {
                 _context.Add(blog);

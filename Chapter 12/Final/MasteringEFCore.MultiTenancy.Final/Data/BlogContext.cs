@@ -6,6 +6,7 @@ using MasteringEFCore.MultiTenancy.Final.Models;
 using Microsoft.EntityFrameworkCore;
 using MasteringEFCore.MultiTenancy.Final.ViewModels;
 using System.Threading;
+using MasteringEFCore.MultiTenancy.Final.Exceptions;
 
 namespace MasteringEFCore.MultiTenancy.Final.Data
 {
@@ -163,5 +164,44 @@ namespace MasteringEFCore.MultiTenancy.Final.Data
                 .WithOne(x => x.Tenant)
                 .HasForeignKey<Person>(x => x.TenantId);
         }
+
+        public override int SaveChanges()
+        {
+            ValidateMultiTenantPersistence();
+            return base.SaveChanges();
+        }
+
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        {
+            ValidateMultiTenantPersistence();
+            return base.SaveChanges(acceptAllChangesOnSuccess);
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            ValidateMultiTenantPersistence();
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            ValidateMultiTenantPersistence();
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+
+        private void ValidateMultiTenantPersistence()
+        {
+            var tenantIds = ChangeTracker.Entries()
+                            .Where(item => item.Entity is EntityBase)
+                            .Select(item => ((EntityBase)item.Entity).TenantId)
+                            .Distinct();
+
+            if (!tenantIds.Any()) return;
+            if (tenantIds.Count() > 1 || 
+                !(tenantIds.Count().Equals(1) && tenantIds.First().Equals(TenantId)))
+            {
+                throw new MultiTenantException("Invalid tenant id(s) found: " + string.Join(", ", tenantIds));
+            }
+         }
     }
 }

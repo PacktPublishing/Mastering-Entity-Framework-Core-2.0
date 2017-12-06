@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace MasteringEFCore.MultiTenancy.Final.Models
 {
-    public class Blog
+    public class Blog : EntityBase
     {
-        public int Id { get; set; }
-        public Guid TenantId { get; set; }
         [Required(ErrorMessage = "Title is required")]
         public string Title { get; set; }
         [Required(ErrorMessage = "Subtitle is required")]

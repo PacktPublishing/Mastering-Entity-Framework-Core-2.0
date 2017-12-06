@@ -43,6 +43,7 @@ namespace MasteringEFCore.MultiTenancy.Final.Controllers
         // GET: Posts
         public async Task<IActionResult> Index()
         {
+            SetTenantId();
             var posts = await _postRepository.GetAsync(
                 new GetAllPostsQuery(_context)
                 {
@@ -61,6 +62,18 @@ namespace MasteringEFCore.MultiTenancy.Final.Controllers
                 }
             });
             return View(posts);
+        }
+
+        private void SetTenantId()
+        {
+            if (this.User == null) return;
+            var person = _context.People.FirstOrDefault(item => item.User.Username.Equals(this.User.Identity.Name));
+            if (person != null)
+            {
+                _context.TenantId = person.TenantId.HasValue ? person.TenantId.Value : Guid.Empty;
+            }
+
+            return;
         }
 
         [AllowAnonymous]
