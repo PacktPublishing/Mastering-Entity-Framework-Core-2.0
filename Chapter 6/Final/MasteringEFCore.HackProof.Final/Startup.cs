@@ -1,6 +1,7 @@
 ﻿using MasteringEFCore.HackProof.Final.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +22,8 @@ namespace MasteringEFCore.HackProof.Final
         {
             services.AddDbContext<BlogContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddMvc(options =>
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
             services.AddMvc();
         }
 

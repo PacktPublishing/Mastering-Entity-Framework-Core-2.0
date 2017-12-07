@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MasteringEFCore.HackProof.Final.Data;
 using MasteringEFCore.HackProof.Final.Models;
+using MasteringEFCore.HackProof.Final.ViewModels;
+using MasteringEFCore.HackProof.Final.Helpers;
 
 namespace MasteringEFCore.HackProof.Final.Controllers
 {
@@ -143,6 +145,38 @@ namespace MasteringEFCore.HackProof.Final.Controllers
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Register(RegistrationViewModel
+      registrationViewModel)
+        {
+            var user = new User
+            {
+                Username = registrationViewModel.Username,
+                Email = registrationViewModel.Email,
+                PasswordHash = Cryptography.Instance.HashPassword(
+                  registrationViewModel.Password)
+            };
+
+            if (TryValidateModel(user))
+            {
+                await _context.Users.AddAsync(user);
+                ViewBag.Message = "User created successfully";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ViewBag.Message = "Error occurred while validating the user";
+            }
+
+            return View(user);
+        }
+
+        public async Task<IActionResult> IsUsernameAvailable(string username)
+        {
+            var usernameAvailable =
+                await _context.Users.AnyAsync(x => x.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+            return Json(data: !usernameAvailable);
         }
 
         private bool UserExists(int id)

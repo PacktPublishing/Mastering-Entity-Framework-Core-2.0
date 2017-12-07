@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -10,6 +11,7 @@ namespace MasteringEFCore.HackProof.Final.Models
         [Required(ErrorMessage = "Display Name is required")]
         public string DisplayName { get; set; }
         [Required(ErrorMessage = "Username is required")]
+        [Remote(action: "IsUsernameAvailable", controller: "Users")]
         public string Username { get; set; }
         [Required(ErrorMessage = "Password is required")]
         public string PasswordHash { get; set; }

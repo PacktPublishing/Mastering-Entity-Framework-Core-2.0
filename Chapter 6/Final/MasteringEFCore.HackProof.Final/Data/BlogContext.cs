@@ -44,6 +44,11 @@ namespace MasteringEFCore.HackProof.Final.Data
                 .HasOne(x => x.Blog)
                 .WithMany(x => x.Posts)
                 .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Person>()
+                .ToTable("Person")
+                .HasOne(x => x.User)
+                .WithOne(x => x.Person)
+                .HasForeignKey<User>(x => x.PersonId);
         }
 
         public DbSet<MasteringEFCore.HackProof.Final.ViewModels.RegistrationViewModel> RegistrationViewModel { get; set; }
