@@ -1,4 +1,4 @@
-﻿using MasteringEFCore.HackProof.Final.Data;
+﻿using MasteringEFCore.RawSql.Starter.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace MasteringEFCore.HackProof.Final
+namespace MasteringEFCore.RawSql.Starter
 {
     public class Startup
     {
@@ -47,6 +47,8 @@ namespace MasteringEFCore.HackProof.Final
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            DbInitializer.Initialize(blogContext);
         }
     }
 }
