@@ -28,10 +28,7 @@ namespace MasteringEFCore.QueryObjectPattern.Starter.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Blog>()
-                .ToTable("Blog")
-                .Property(x=>x.ModifiedAt)
-                .IsConcurrencyToken();
+            modelBuilder.Entity<Blog>().ToTable("Blog");
             modelBuilder.Entity<Post>()
                 .ToTable("Post")
                 .HasOne(x=>x.Author)

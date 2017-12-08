@@ -12,22 +12,18 @@ using Microsoft.Extensions.Logging;
 using MasteringEFCore.QueryObjectPattern.Final.Handlers;
 using MasteringEFCore.QueryObjectPattern.Final.Repositories;
 using Newtonsoft.Json.Serialization;
+using Microsoft.AspNetCore.Mvc;
 
-namespace MasteringEFCore
+namespace MasteringEFCore.QueryObjectPattern.Final
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
-            Configuration = builder.Build();
+            Configuration = configuration;
         }
 
-        public IConfigurationRoot Configuration { get; }
+        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -39,7 +35,9 @@ namespace MasteringEFCore
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<IPostRepositoryWithQueries, PostRepositoryWithQueries>();
             services.AddScoped<IPostRepositoryWithCommandsQueries, PostRepositoryWithCommandsQueries>();
-            services.AddMvc().AddJsonOptions(options =>
+            services.AddMvc(options =>
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()))
+                .AddJsonOptions(options =>
             {
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                 options.SerializerSettings.ReferenceLoopHandling
@@ -52,11 +50,8 @@ namespace MasteringEFCore
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, BlogContext blogContext)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, BlogContext blogContext)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
