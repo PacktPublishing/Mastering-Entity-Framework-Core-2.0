@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace MasteringEFCore.RawSql.Starter.Migrations
+namespace MasteringEFCore.RawSql.Final.Migrations
 {
     public partial class Initial : Migration
     {

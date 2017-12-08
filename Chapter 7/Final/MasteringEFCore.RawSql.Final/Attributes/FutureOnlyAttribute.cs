@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using MasteringEFCore.RawSql.Starter.Models;
+using MasteringEFCore.RawSql.Final.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
-namespace MasteringEFCore.RawSql.Starter.Attributes
+namespace MasteringEFCore.RawSql.Final.Attributes
 {
     public class FutureOnlyAttribute : ValidationAttribute, IClientModelValidator
     {

@@ -2,10 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using MasteringEFCore.RawSql.Starter.Attributes;
+using MasteringEFCore.RawSql.Final.Attributes;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
-namespace MasteringEFCore.RawSql.Starter.Models
+namespace MasteringEFCore.RawSql.Final.Models
 {
     public class Post //: IValidatableObject
     {

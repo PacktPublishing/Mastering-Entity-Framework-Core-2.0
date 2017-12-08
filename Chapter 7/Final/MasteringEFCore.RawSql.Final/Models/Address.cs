@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MasteringEFCore.RawSql.Starter.Models
+namespace MasteringEFCore.RawSql.Final.Models
 {
     public class Address
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace MasteringEFCore.RawSql.Starter.Migrations
+namespace MasteringEFCore.RawSql.Final.Migrations
 {
     public partial class ModelsUpdated : Migration
     {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MasteringEFCore.RawSql.Starter.Models
+namespace MasteringEFCore.RawSql.Final.Models
 {
     public class User
     {

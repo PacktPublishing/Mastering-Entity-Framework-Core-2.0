@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MasteringEFCore.RawSql.Starter.Data;
+using MasteringEFCore.RawSql.Final.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MasteringEFCore.RawSql.Starter
+namespace MasteringEFCore.RawSql.Final
 {
     public class Startup
     {

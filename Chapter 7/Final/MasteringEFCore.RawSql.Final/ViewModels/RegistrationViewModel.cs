@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MasteringEFCore.RawSql.Starter.ViewModels
+namespace MasteringEFCore.RawSql.Final.ViewModels
 {
     public class RegistrationViewModel
     {

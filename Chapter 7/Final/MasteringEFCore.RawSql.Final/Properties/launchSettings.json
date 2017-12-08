@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "MasteringEFCore.RawSql.Starter": {
+    "MasteringEFCore.RawSql.Final": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

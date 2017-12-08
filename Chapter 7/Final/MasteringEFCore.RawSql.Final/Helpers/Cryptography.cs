@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
-namespace MasteringEFCore.RawSql.Starter.Helpers
+namespace MasteringEFCore.RawSql.Final.Helpers
 {
     public class Cryptography
     {

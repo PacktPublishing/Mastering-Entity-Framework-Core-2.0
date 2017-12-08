@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MasteringEFCore.RawSql.Starter.Data;
-using MasteringEFCore.RawSql.Starter.Models;
+using MasteringEFCore.RawSql.Final.Data;
+using MasteringEFCore.RawSql.Final.Models;
 using Microsoft.AspNetCore.Authorization;
-using MasteringEFCore.RawSql.Starter.ViewModels;
-using MasteringEFCore.RawSql.Starter.Helpers;
+using MasteringEFCore.RawSql.Final.ViewModels;
+using MasteringEFCore.RawSql.Final.Helpers;
 
-namespace MasteringEFCore.RawSql.Starter.Controllers
+namespace MasteringEFCore.RawSql.Final.Controllers
 {
     //[Authorize]
     public class UsersController : Controller

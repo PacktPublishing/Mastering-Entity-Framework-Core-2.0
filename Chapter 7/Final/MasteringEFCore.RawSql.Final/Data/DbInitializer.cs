@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MasteringEFCore.RawSql.Starter.Helpers;
-using MasteringEFCore.RawSql.Starter.Models;
+using MasteringEFCore.RawSql.Final.Helpers;
+using MasteringEFCore.RawSql.Final.Models;
 
-namespace MasteringEFCore.RawSql.Starter.Data
+namespace MasteringEFCore.RawSql.Final.Data
 {
     public class DbInitializer
     {

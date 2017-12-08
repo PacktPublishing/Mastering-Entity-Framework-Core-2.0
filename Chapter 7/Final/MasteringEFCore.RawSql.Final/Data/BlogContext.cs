@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MasteringEFCore.RawSql.Starter.Models;
+using MasteringEFCore.RawSql.Final.Models;
 using Microsoft.EntityFrameworkCore;
-using MasteringEFCore.RawSql.Starter.ViewModels;
+using MasteringEFCore.RawSql.Final.ViewModels;
 
-namespace MasteringEFCore.RawSql.Starter.Data
+namespace MasteringEFCore.RawSql.Final.Data
 {
     public class BlogContext: DbContext
     {
@@ -80,6 +80,6 @@ namespace MasteringEFCore.RawSql.Starter.Data
                 .HasForeignKey<User>(x=>x.PersonId);
         }
 
-        public DbSet<MasteringEFCore.RawSql.Starter.ViewModels.RegistrationViewModel> RegistrationViewModel { get; set; }
+        public DbSet<MasteringEFCore.RawSql.Final.ViewModels.RegistrationViewModel> RegistrationViewModel { get; set; }
     }
 }

@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using MasteringEFCore.RawSql.Starter.Data;
+using MasteringEFCore.RawSql.Final.Data;
 
-namespace MasteringEFCore.RawSql.Starter.Migrations
+namespace MasteringEFCore.RawSql.Final.Migrations
 {
     [DbContext(typeof(BlogContext))]
     [Migration("20170618160407_Initial")]
@@ -17,7 +17,7 @@ namespace MasteringEFCore.RawSql.Starter.Migrations
                 .HasAnnotation("ProductVersion", "1.1.2")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("MasteringEFCore.RawSql.Starter.Models.Address", b =>
+            modelBuilder.Entity("MasteringEFCore.RawSql.Final.Models.Address", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -54,7 +54,7 @@ namespace MasteringEFCore.RawSql.Starter.Migrations
                     b.ToTable("Address");
                 });
 
-            modelBuilder.Entity("MasteringEFCore.RawSql.Starter.Models.Blog", b =>
+            modelBuilder.Entity("MasteringEFCore.RawSql.Final.Models.Blog", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -89,7 +89,7 @@ namespace MasteringEFCore.RawSql.Starter.Migrations
                     b.ToTable("Blog");
                 });
 
-            modelBuilder.Entity("MasteringEFCore.RawSql.Starter.Models.Category", b =>
+            modelBuilder.Entity("MasteringEFCore.RawSql.Final.Models.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -113,7 +113,7 @@ namespace MasteringEFCore.RawSql.Starter.Migrations
                     b.ToTable("Category");
                 });
 
-            modelBuilder.Entity("MasteringEFCore.RawSql.Starter.Models.Comment", b =>
+            modelBuilder.Entity("MasteringEFCore.RawSql.Final.Models.Comment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -147,7 +147,7 @@ namespace MasteringEFCore.RawSql.Starter.Migrations
                     b.ToTable("Comment");
                 });
 
-            modelBuilder.Entity("MasteringEFCore.RawSql.Starter.Models.Person", b =>
+            modelBuilder.Entity("MasteringEFCore.RawSql.Final.Models.Person", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -179,7 +179,7 @@ namespace MasteringEFCore.RawSql.Starter.Migrations
                     b.ToTable("Person");
                 });
 
-            modelBuilder.Entity("MasteringEFCore.RawSql.Starter.Models.Post", b =>
+            modelBuilder.Entity("MasteringEFCore.RawSql.Final.Models.Post", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -221,7 +221,7 @@ namespace MasteringEFCore.RawSql.Starter.Migrations
                     b.ToTable("Post");
                 });
 
-            modelBuilder.Entity("MasteringEFCore.RawSql.Starter.Models.Tag", b =>
+            modelBuilder.Entity("MasteringEFCore.RawSql.Final.Models.Tag", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -241,7 +241,7 @@ namespace MasteringEFCore.RawSql.Starter.Migrations
                     b.ToTable("Tag");
                 });
 
-            modelBuilder.Entity("MasteringEFCore.RawSql.Starter.Models.TagPost", b =>
+            modelBuilder.Entity("MasteringEFCore.RawSql.Final.Models.TagPost", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -267,7 +267,7 @@ namespace MasteringEFCore.RawSql.Starter.Migrations
                     b.ToTable("TagPost");
                 });
 
-            modelBuilder.Entity("MasteringEFCore.RawSql.Starter.Models.User", b =>
+            modelBuilder.Entity("MasteringEFCore.RawSql.Final.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -300,84 +300,84 @@ namespace MasteringEFCore.RawSql.Starter.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("MasteringEFCore.RawSql.Starter.Models.Address", b =>
+            modelBuilder.Entity("MasteringEFCore.RawSql.Final.Models.Address", b =>
                 {
-                    b.HasOne("MasteringEFCore.RawSql.Starter.Models.User", "User")
+                    b.HasOne("MasteringEFCore.RawSql.Final.Models.User", "User")
                         .WithOne("Address")
-                        .HasForeignKey("MasteringEFCore.RawSql.Starter.Models.Address", "UserId")
+                        .HasForeignKey("MasteringEFCore.RawSql.Final.Models.Address", "UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MasteringEFCore.RawSql.Starter.Models.Blog", b =>
+            modelBuilder.Entity("MasteringEFCore.RawSql.Final.Models.Blog", b =>
                 {
-                    b.HasOne("MasteringEFCore.RawSql.Starter.Models.Category")
+                    b.HasOne("MasteringEFCore.RawSql.Final.Models.Category")
                         .WithMany("Blogs")
                         .HasForeignKey("CategoryId");
 
-                    b.HasOne("MasteringEFCore.RawSql.Starter.Models.User")
+                    b.HasOne("MasteringEFCore.RawSql.Final.Models.User")
                         .WithMany("Blogs")
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("MasteringEFCore.RawSql.Starter.Models.Category", b =>
+            modelBuilder.Entity("MasteringEFCore.RawSql.Final.Models.Category", b =>
                 {
-                    b.HasOne("MasteringEFCore.RawSql.Starter.Models.Category", "ParentCategory")
+                    b.HasOne("MasteringEFCore.RawSql.Final.Models.Category", "ParentCategory")
                         .WithMany("Subcategories")
                         .HasForeignKey("ParentCategoryId");
                 });
 
-            modelBuilder.Entity("MasteringEFCore.RawSql.Starter.Models.Comment", b =>
+            modelBuilder.Entity("MasteringEFCore.RawSql.Final.Models.Comment", b =>
                 {
-                    b.HasOne("MasteringEFCore.RawSql.Starter.Models.Person", "Person")
+                    b.HasOne("MasteringEFCore.RawSql.Final.Models.Person", "Person")
                         .WithMany("Comments")
                         .HasForeignKey("PersonId");
 
-                    b.HasOne("MasteringEFCore.RawSql.Starter.Models.Post", "Post")
+                    b.HasOne("MasteringEFCore.RawSql.Final.Models.Post", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MasteringEFCore.RawSql.Starter.Models.User", "User")
+                    b.HasOne("MasteringEFCore.RawSql.Final.Models.User", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("MasteringEFCore.RawSql.Starter.Models.Post", b =>
+            modelBuilder.Entity("MasteringEFCore.RawSql.Final.Models.Post", b =>
                 {
-                    b.HasOne("MasteringEFCore.RawSql.Starter.Models.User", "Author")
+                    b.HasOne("MasteringEFCore.RawSql.Final.Models.User", "Author")
                         .WithMany("Posts")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MasteringEFCore.RawSql.Starter.Models.Blog", "Blog")
+                    b.HasOne("MasteringEFCore.RawSql.Final.Models.Blog", "Blog")
                         .WithMany("Posts")
                         .HasForeignKey("BlogId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MasteringEFCore.RawSql.Starter.Models.Category", "Category")
+                    b.HasOne("MasteringEFCore.RawSql.Final.Models.Category", "Category")
                         .WithMany("Posts")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MasteringEFCore.RawSql.Starter.Models.TagPost", b =>
+            modelBuilder.Entity("MasteringEFCore.RawSql.Final.Models.TagPost", b =>
                 {
-                    b.HasOne("MasteringEFCore.RawSql.Starter.Models.Post", "Post")
+                    b.HasOne("MasteringEFCore.RawSql.Final.Models.Post", "Post")
                         .WithMany("TagPosts")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MasteringEFCore.RawSql.Starter.Models.Tag", "Tag")
+                    b.HasOne("MasteringEFCore.RawSql.Final.Models.Tag", "Tag")
                         .WithMany("TagPosts")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MasteringEFCore.RawSql.Starter.Models.User", b =>
+            modelBuilder.Entity("MasteringEFCore.RawSql.Final.Models.User", b =>
                 {
-                    b.HasOne("MasteringEFCore.RawSql.Starter.Models.Person", "Person")
+                    b.HasOne("MasteringEFCore.RawSql.Final.Models.Person", "Person")
                         .WithOne("User")
-                        .HasForeignKey("MasteringEFCore.RawSql.Starter.Models.User", "PersonId")
+                        .HasForeignKey("MasteringEFCore.RawSql.Final.Models.User", "PersonId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }
