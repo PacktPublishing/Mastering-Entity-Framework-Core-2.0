@@ -1,22 +1,28 @@
-﻿using MasteringEFCore.Transactions.Starter.Data;
-using MasteringEFCore.Transactions.Starter.Models;
-using MasteringEFCore.Transactions.Starter.ViewModels;
+﻿using MasteringEFCore.Transactions.Starter.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MasteringEFCore.Transactions.Starter.Core.Commands;
-using MasteringEFCore.Transactions.Starter.Core.Queries;
 
 namespace MasteringEFCore.Transactions.Starter.Repositories
 {
     public interface IPostRepository
     {
-        IEnumerable<Post> Get<T>(T query) where T : IQueryHandler<IEnumerable<Post>>;
-        Task<IEnumerable<Post>> GetAsync<T>(T query) where T : IQueryHandlerAsync<IEnumerable<Post>>;
-        Post GetSingle<T>(T query) where T : IQueryHandler<Post>;
-        Task<Post> GetSingleAsync<T>(T query) where T : IQueryHandlerAsync<Post>;
-        int Execute<T>(T command) where T : ICommandHandler<int>;
-        Task<int> ExecuteAsync<T>(T command) where T : ICommandHandlerAsync<int>;
+        IEnumerable<Post> GetAllPosts();
+        Task<IEnumerable<Post>> GetAllPostsAsync();
+        Post GetPostById(int? id, bool includeData = true);
+        Task<Post> GetPostByIdAsync(int? id, bool includeData = true);
+        IEnumerable<Post> FindPostByTitle(string title);
+        IEnumerable<Post> FindPostByAuthor(string author);
+        IEnumerable<Post> FindPostByPublishedYear(int year);
+        IEnumerable<Post> FindPostByHighestVisitors();
+        IEnumerable<Post> FindPostByCategory(string category);
+        IEnumerable<Post> FindPost(string keyword, int pageNumber, int pageCount);
+        int AddPost(Post item);
+        Task<int> AddPostAsync(Post item);
+        int UpdatePost(Post item);
+        Task<int> UpdatePostAsync(Post item);
+        int DeletePost(int? id);
+        Task<int> DeletePostAsync(int? id);
     }
 }

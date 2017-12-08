@@ -9,24 +9,21 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using MasteringEFCore.Transactions.Starter.Handlers;
 using MasteringEFCore.Transactions.Starter.Repositories;
 using Newtonsoft.Json.Serialization;
+using Microsoft.AspNetCore.Mvc;
 
-namespace MasteringEFCore
+namespace MasteringEFCore.Transactions.Starter
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
-            Configuration = builder.Build();
+            Configuration = configuration;
         }
 
-        public IConfigurationRoot Configuration { get; }
+        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -34,8 +31,13 @@ namespace MasteringEFCore
             // Add framework services.
             services.AddDbContext<BlogContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<IPostDetailQueryHandler, PostDetailQueryHandler>();
             services.AddScoped<IPostRepository, PostRepository>();
-            services.AddMvc().AddJsonOptions(options =>
+            services.AddScoped<IPostRepositoryWithQueries, PostRepositoryWithQueries>();
+            services.AddScoped<IPostRepositoryWithCommandsQueries, PostRepositoryWithCommandsQueries>();
+            services.AddMvc(options =>
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()))
+                .AddJsonOptions(options =>
             {
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                 options.SerializerSettings.ReferenceLoopHandling
@@ -48,11 +50,8 @@ namespace MasteringEFCore
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, BlogContext blogContext)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, BlogContext blogContext)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

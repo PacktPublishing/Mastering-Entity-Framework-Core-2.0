@@ -10,6 +10,7 @@ using MasteringEFCore.Transactions.Starter.Data;
 using MasteringEFCore.Transactions.Starter.Models;
 using Microsoft.AspNetCore.Authorization;
 using MasteringEFCore.Transactions.Starter.Repositories;
+using MasteringEFCore.Transactions.Starter.Handlers;
 using MasteringEFCore.Transactions.Starter.Infrastructure.Commands.Posts;
 using MasteringEFCore.Transactions.Starter.Infrastructure.Queries.Posts;
 using ExpressionPostQueries = MasteringEFCore.Transactions.Starter.Infrastructure.QueriesWithExpressions.Posts;
@@ -20,18 +21,26 @@ namespace MasteringEFCore.Transactions.Starter.Controllers
     public class PostsController : Controller
     {
         private readonly BlogContext _context;
-        private readonly IPostRepository _postRepository;
+        //private readonly IPostRepository _repository;
+        //private readonly IPostRepositoryWithQueries _repositoryWithQueries;
+        //private readonly IPostDetailQueryHandler _postDetailQueryHandler;
+        private readonly IPostRepositoryWithCommandsQueries _postRepositoryWithCommandsQueries;
 
-        public PostsController(BlogContext context, IPostRepository repository)
+        public PostsController(BlogContext context, IPostRepositoryWithCommandsQueries repositoryWithCommandsQueries)
         {
             _context = context;
-            _postRepository = repository;
+            _postRepositoryWithCommandsQueries = repositoryWithCommandsQueries;
+            //_repository = repository;
+            //_repositoryWithQueries = repositoryWithQueries;
+            //_postDetailQueryHandler = postDetailQueryHandler;
         }
 
         // GET: Posts
         public async Task<IActionResult> Index()
         {
-            return View(await _postRepository.GetAsync(
+            //return View(await _repository.GetAllPostsAsync());
+            //return View(await _repositoryWithQueries.GetAsync(new GetAllPostsQuery(true)));
+            return View(await _postRepositoryWithCommandsQueries.GetAsync(
                 new GetAllPostsQuery(_context)
                 {
                     IncludeData = true
@@ -42,7 +51,17 @@ namespace MasteringEFCore.Transactions.Starter.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> GetPaginatedPosts(string keyword, int pageNumber, int pageCount)
         {
-            var results = await _postRepository.GetAsync(
+            //var results = await _repositoryWithQueries.GetAsync(
+            //    new GetPaginatedPostByKeywordQuery(keyword, pageNumber, pageCount, true));
+            //var results = await _postRepositoryWithCommandsQueries.GetAsync(
+            //    new GetPaginatedPostByKeywordQuery(_context)
+            //    {
+            //        IncludeData = true,
+            //        Keyword = keyword,
+            //        PageCount = pageCount,
+            //        PageNumber = pageNumber
+            //    });
+            var results = await _postRepositoryWithCommandsQueries.GetAsync(
                 new ExpressionPostQueries.GetPaginatedPostByKeywordQuery(_context)
                 {
                     IncludeData = true,
@@ -57,7 +76,15 @@ namespace MasteringEFCore.Transactions.Starter.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> GetPostsByAuthor(string author)
         {
-            var results = await _postRepository.GetAsync(
+            //var results = await _repositoryWithQueries.GetAsync(
+            //    new GetPostByAuthorQuery(author, true));
+            //var results = await _postRepositoryWithCommandsQueries.GetAsync(
+            //    new GetPostByAuthorQuery(_context)
+            //    {
+            //        IncludeData = true,
+            //        Author = author
+            //    });
+            var results = await _postRepositoryWithCommandsQueries.GetAsync(
                 new ExpressionPostQueries.GetPostByAuthorQuery(_context)
                 {
                     IncludeData = true,
@@ -70,7 +97,15 @@ namespace MasteringEFCore.Transactions.Starter.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> GetPostsByCategory(string category)
         {
-            var results = await _postRepository.GetAsync(
+            //var results = await _repositoryWithQueries.GetAsync(
+            //    new GetPostByCategoryQuery(category, true));
+            //var results = await _postRepositoryWithCommandsQueries.GetAsync(
+            //    new GetPostByCategoryQuery(_context)
+            //    {
+            //        IncludeData = true,
+            //        Category = category
+            //    });
+            var results = await _postRepositoryWithCommandsQueries.GetAsync(
                 new ExpressionPostQueries.GetPostByCategoryQuery(_context)
                 {
                     IncludeData = true,
@@ -83,7 +118,9 @@ namespace MasteringEFCore.Transactions.Starter.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> GetPostByHighestVisitors()
         {
-            var results = await _postRepository.GetAsync(
+            //var results = await _repositoryWithQueries.GetAsync(
+            //    new GetPostByHighestVisitorsQuery(true));
+            var results = await _postRepositoryWithCommandsQueries.GetAsync(
                 new GetPostByHighestVisitorsQuery(_context)
                 {
                     IncludeData = true
@@ -95,7 +132,14 @@ namespace MasteringEFCore.Transactions.Starter.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> GetPostByPublishedYear(int year)
         {
-            var results = await _postRepository.GetAsync(
+            //var results = await _repositoryWithQueries.GetAsync(
+            //    new GetPostByPublishedYearQuery(year, true));
+            //var results = await _postRepositoryWithCommandsQueries.GetAsync(
+            //    new GetPostByPublishedYearQuery(_context)
+            //    {
+            //        IncludeData = true
+            //    });
+            var results = await _postRepositoryWithCommandsQueries.GetAsync(
                 new ExpressionPostQueries.GetPostByPublishedYearQuery(_context)
                 {
                     IncludeData = true
@@ -107,7 +151,14 @@ namespace MasteringEFCore.Transactions.Starter.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> GetPostByTitle(string title)
         {
-            var results = await _postRepository.GetAsync(
+            //var results = await _repositoryWithQueries.GetAsync(
+            //    new GetPostByTitleQuery(title, true));
+            //var results = await _postRepositoryWithCommandsQueries.GetAsync(
+            //    new GetPostByTitleQuery(_context)
+            //    {
+            //        IncludeData = true
+            //    });
+            var results = await _postRepositoryWithCommandsQueries.GetAsync(
                 new ExpressionPostQueries.GetPostByTitleQuery(_context)
                 {
                     IncludeData = true
@@ -122,8 +173,17 @@ namespace MasteringEFCore.Transactions.Starter.Controllers
             {
                 return NotFound();
             }
-            
-            var post = await _postRepository.GetSingleAsync(
+
+            //var post = await _context.Posts
+            //    .Include(p => p.Author)
+            //    .Include(p => p.Blog)
+            //    .Include(p => p.Category)
+            //    .FirstOrDefaultAsync(x => x.Id == id);
+
+            //var post = await _repository.GetPostByIdAsync(id.Value);
+            //var post = await _repositoryWithQueries.GetSingleAsync(new GetPostByIdQuery(id, true));
+            //var post = await _postDetailQueryHandler.Handle(new PostDetailQuery(id));
+            var post = await _postRepositoryWithCommandsQueries.GetSingleAsync(
                 new GetPostByIdQuery(_context)
                 {
                     IncludeData = true,
@@ -153,9 +213,12 @@ namespace MasteringEFCore.Transactions.Starter.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Content,Summary,PublishedDateTime,Url,VisitorCount,CreatedAt,ModifiedAt,BlogId,AuthorId,CategoryId")] Post post)
         {
+            //var results = new List<ValidationResult>();
+            //var isBusinessValid = Validator.TryValidateObject(post, new ValidationContext(post, null, null), results, false);
             if (ModelState.IsValid)
             {
-                await _postRepository.ExecuteAsync(
+                //await _repository.AddPostAsync(post);
+                await _postRepositoryWithCommandsQueries.ExecuteAsync(
                     new CreatePostCommand(_context)
                     {
                         Title = post.Title,
@@ -181,8 +244,9 @@ namespace MasteringEFCore.Transactions.Starter.Controllers
             {
                 return NotFound();
             }
-
-            var post = await _postRepository.GetSingleAsync(
+            //var post = await _repositoryWithQueries.GetSingleAsync(new GetPostByIdQuery(id, false));
+            //var post = await _repository.GetPostByIdAsync(id, false);
+            var post = await _postRepositoryWithCommandsQueries.GetSingleAsync(
                 new GetPostByIdQuery(_context)
                 {
                     IncludeData = false,
@@ -214,7 +278,8 @@ namespace MasteringEFCore.Transactions.Starter.Controllers
             {
                 try
                 {
-                    await _postRepository.ExecuteAsync(
+                    //await _repository.UpdatePostAsync(post);
+                    await _postRepositoryWithCommandsQueries.ExecuteAsync(
                         new UpdatePostCommand(_context)
                         {
                             Id = post.Id,
@@ -253,8 +318,10 @@ namespace MasteringEFCore.Transactions.Starter.Controllers
             {
                 return NotFound();
             }
-            
-            var post = await _postRepository.GetSingleAsync(
+
+            //var post = await _repositoryWithQueries.GetSingleAsync(new GetPostByIdQuery(id, true));
+            //var post = await _repository.GetPostByIdAsync(id);
+            var post = await _postRepositoryWithCommandsQueries.GetSingleAsync(
                 new GetPostByIdQuery(_context)
                 {
                     IncludeData = true,
@@ -273,7 +340,8 @@ namespace MasteringEFCore.Transactions.Starter.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _postRepository.ExecuteAsync(
+            //await _repository.DeletePostAsync(id);
+            await _postRepositoryWithCommandsQueries.ExecuteAsync(
                 new DeletePostCommand(_context)
                 {
                     Id = id
