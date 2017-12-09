@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 
-namespace MasteringEFCore
+namespace MasteringEFCore.Concurrencies.Starter
 {
     public class Program
     {

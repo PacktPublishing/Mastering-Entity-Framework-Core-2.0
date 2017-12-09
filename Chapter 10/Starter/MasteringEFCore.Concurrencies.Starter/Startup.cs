@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 using MasteringEFCore.Concurrencies.Starter.Repositories;
 using Newtonsoft.Json.Serialization;
 
-namespace MasteringEFCore
+namespace MasteringEFCore.Concurrencies.Starter
 {
     public class Startup
     {

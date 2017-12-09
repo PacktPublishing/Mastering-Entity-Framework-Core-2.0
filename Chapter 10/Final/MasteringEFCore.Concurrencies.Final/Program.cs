@@ -9,7 +9,7 @@ using MasteringEFCore.Concurrencies.Final.Data;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore;
 
-namespace MasteringEFCore
+namespace MasteringEFCore.Concurrencies.Final
 {
     public class Program
     {

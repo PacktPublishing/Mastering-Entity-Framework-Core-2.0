@@ -9,7 +9,7 @@ using MasteringEFCore.Performance.Starter.Data;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore;
 
-namespace MasteringEFCore
+namespace MasteringEFCore.Performance.Starter
 {
     public class Program
     {
