@@ -14,8 +14,8 @@ namespace MasteringEFCore.Performance.Starter.Infrastructure.Commands.Comments
 {
     public class CreateCommentCommand : CommandBase, ICreateCommentCommand<int>
     {
-        private readonly IConfigurationRoot _configuration;
-        public CreateCommentCommand(IConfigurationRoot configuration, BlogContext context) : base(context)
+        private readonly IConfiguration _configuration;
+        public CreateCommentCommand(IConfiguration configuration, BlogContext context) : base(context)
         {
             _configuration = configuration;
         }
