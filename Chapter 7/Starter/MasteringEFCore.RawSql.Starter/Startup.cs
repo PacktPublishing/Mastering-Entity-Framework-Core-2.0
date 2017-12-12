@@ -47,8 +47,6 @@ namespace MasteringEFCore.RawSql.Starter
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-
-            DbInitializer.Initialize(blogContext);
         }
     }
 }

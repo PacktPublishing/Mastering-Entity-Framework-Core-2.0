@@ -21,7 +21,11 @@ namespace MasteringEFCore.RawSql.Starter.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Blog>().ToTable("Blog");
-            modelBuilder.Entity<Post>().ToTable("Post");
+            modelBuilder.Entity<Post>()
+                .ToTable("Post")
+                .HasOne(x=>x.Category)
+                .WithMany(x=>x.Posts)
+                .HasForeignKey(x=>x.CategoryId);
             modelBuilder.Entity<User>()
                 .ToTable("User")
                 .HasOne(x => x.Address)
