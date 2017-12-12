@@ -24,10 +24,12 @@ namespace MasteringEFCore.MultiTenancy.Final.Infrastructure.Queries.Posts
         {
             var data = IncludeData
                 ? Context.Posts.Include(p => p.Author).Include(p => p.Blog).Include(p => p.Category)
+                    .IgnoreQueryFilters()
                     .AsQueryable()
                     .Skip(PageNumber - 1).Take(PageCount)
                     .ToList()
                 : Context.Posts
+                    .IgnoreQueryFilters()
                     .AsQueryable()
                     .Skip(PageNumber - 1).Take(PageCount)
                     .ToList();
@@ -49,10 +51,12 @@ namespace MasteringEFCore.MultiTenancy.Final.Infrastructure.Queries.Posts
         {
             var data = IncludeData
                 ? await Context.Posts.Include(p => p.Author).Include(p => p.Blog).Include(p => p.Category)
+                    .IgnoreQueryFilters()
                     .AsQueryable()
                     .Skip(PageNumber - 1).Take(PageCount)
                     .ToListAsync()
                 : await Context.Posts
+                    .IgnoreQueryFilters()
                     .AsQueryable()
                     .Skip(PageNumber - 1).Take(PageCount)
                     .ToListAsync();

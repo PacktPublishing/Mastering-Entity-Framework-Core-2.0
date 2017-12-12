@@ -24,8 +24,10 @@ namespace MasteringEFCore.MultiTenancy.Final.Infrastructure.Queries.Posts
             var post = IncludeData
                            ? Context.Posts.Include(p => p.Author)
                                .Include(p => p.Blog).Include(p => p.Category)
+                               .IgnoreQueryFilters()
                                .SingleOrDefault(x => x.Url.Equals(Url))
                            : Context.Posts
+                               .IgnoreQueryFilters()
                                .SingleOrDefault(x => x.Url.Equals(Url));
 
             return IncludeTags(post);
@@ -36,8 +38,10 @@ namespace MasteringEFCore.MultiTenancy.Final.Infrastructure.Queries.Posts
             var post = IncludeData
                            ? await Context.Posts.Include(p => p.Author)
                                .Include(p => p.Blog).Include(p => p.Category)
+                               .IgnoreQueryFilters()
                                .SingleOrDefaultAsync(x => x.Url.Equals(Url))
                            : await Context.Posts
+                               .IgnoreQueryFilters()
                                .SingleOrDefaultAsync(x => x.Url.Equals(Url));
 
             return IncludeTags(post);

@@ -22,11 +22,13 @@ namespace MasteringEFCore.MultiTenancy.Final.Infrastructure.Queries.Posts
         {
             var posts = IncludeData
                         ? Context.Posts
+                            .IgnoreQueryFilters()
                             .Include(p => p.Author).Include(p => p.Blog)
                             .Include(p => p.Category).Include(p => p.TagPosts)
                             .OrderByDescending(x => x.CreatedAt).Take(Size)
                             .ToList()
                         : Context.Posts
+                            .IgnoreQueryFilters()
                             .OrderByDescending(x => x.CreatedAt).Take(Size)
                             .ToList();
             posts.ForEach(x =>
@@ -46,11 +48,13 @@ namespace MasteringEFCore.MultiTenancy.Final.Infrastructure.Queries.Posts
         {
             var posts = IncludeData
                         ? await Context.Posts
+                            .IgnoreQueryFilters()
                             .OrderByDescending(x => x.CreatedAt).Take(Size)
                             .Include(p => p.Author).Include(p => p.Blog)
                             .Include(p => p.Category).Include(p => p.TagPosts)
                             .ToListAsync()
                         : await Context.Posts
+                            .IgnoreQueryFilters()
                             .OrderByDescending(x => x.CreatedAt).Take(Size)
                             .ToListAsync();
             posts.ForEach(x =>
