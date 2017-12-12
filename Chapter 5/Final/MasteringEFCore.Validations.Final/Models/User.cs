@@ -14,6 +14,7 @@ namespace MasteringEFCore.Validations.Final.Models
         [Required(ErrorMessage = "Password is required")]
         public string PasswordHash { get; set; }
         [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Provide a valid email address")]
         public string Email { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }

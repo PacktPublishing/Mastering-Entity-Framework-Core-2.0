@@ -20,7 +20,11 @@ namespace MasteringEFCore.Validations.Final.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Blog>().ToTable("Blog");
+            modelBuilder.Entity<Blog>()
+                .ToTable("Blog")
+                .HasOne(x=>x.Author)
+                .WithMany(x=>x.Blogs)
+                .HasForeignKey(x=>x.AuthorId);
             modelBuilder.Entity<Post>().ToTable("Post");
             modelBuilder.Entity<User>()
                 .ToTable("User")
@@ -44,6 +48,11 @@ namespace MasteringEFCore.Validations.Final.Data
                 .HasOne(x => x.Blog)
                 .WithMany(x => x.Posts)
                 .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Person>()
+                .ToTable("Person")
+                .HasOne(x => x.User)
+                .WithOne(x => x.Person)
+                .HasForeignKey<User>(x => x.PersonId);
         }
 
         public DbSet<MasteringEFCore.Validations.Final.ViewModels.RegistrationViewModel> RegistrationViewModel { get; set; }

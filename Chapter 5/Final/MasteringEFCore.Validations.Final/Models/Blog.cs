@@ -12,6 +12,7 @@ namespace MasteringEFCore.Validations.Final.Models
         [Required(ErrorMessage = "Subtitle is required")]
         public string Subtitle { get; set; }
         [Required(ErrorMessage = "Url is required")]
+        [Url(ErrorMessage = "Provide a valid url")]
         public string Url { get; set; }
         public string Description { get; set; }
         public DateTime CreatedAt { get; set; }

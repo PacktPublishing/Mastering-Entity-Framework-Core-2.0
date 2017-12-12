@@ -13,6 +13,7 @@ namespace MasteringEFCore.Validations.Final.ViewModels
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
         [Required(ErrorMessage = "ConfirmPassword is required")]
+        [Compare("Password", ErrorMessage = "Password does not match")]
         public string ConfirmPassword { get; set; }
     }
 }

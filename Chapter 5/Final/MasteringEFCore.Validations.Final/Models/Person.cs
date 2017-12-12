@@ -12,8 +12,10 @@ namespace MasteringEFCore.Validations.Final.Models
         [Required(ErrorMessage = "Last Name is required")]
         public string LastName { get; set; }
         public string NickName { get; set; }
+        [Url(ErrorMessage = "Provide a valid url")]
         public string Url { get; set; }
         public string Biography { get; set; }
+        [Url(ErrorMessage = "Provide a valid image url")]
         public string ImageUrl { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }

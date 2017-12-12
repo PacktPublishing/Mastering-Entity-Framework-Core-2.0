@@ -13,6 +13,7 @@ namespace MasteringEFCore.Validations.Final.Models
         public string Content { get; set; }
         public string Summary { get; set; }
         public DateTime PublishedDateTime { get; set; }
+        [Url(ErrorMessage = "Provide a valid url")]
         public string Url { get; set; }
         public long VisitorCount { get; set; }
         public DateTime CreatedAt { get; set; }
