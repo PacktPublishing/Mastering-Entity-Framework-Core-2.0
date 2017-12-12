@@ -11,9 +11,10 @@ using System;
 namespace MasteringEFCore.HackProof.Final.Migrations
 {
     [DbContext(typeof(BlogContext))]
-    partial class BlogContextModelSnapshot : ModelSnapshot
+    [Migration("20171212041809_Added category relationship")]
+    partial class Addedcategoryrelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
