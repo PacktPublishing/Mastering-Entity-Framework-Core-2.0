@@ -27,6 +27,7 @@ namespace MasteringEFCore.Performance.Final.Controllers
         public async Task<IActionResult> Index()
         {
             var people = await _context.People.Take(100)
+                .Include(item => item.Comments)
                 .ToListAsync();
             var peopleViewModel = new List<PersonViewModel>();
             people.ForEach(item =>
