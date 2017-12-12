@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using MasteringEFCore.RawSql.Final.Data;
 using MasteringEFCore.RawSql.Final.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Data.SqlClient;
+using MasteringEFCore.RawSql.Final.Extensions;
 
 namespace MasteringEFCore.RawSql.Final.Controllers
 {
@@ -24,7 +26,28 @@ namespace MasteringEFCore.RawSql.Final.Controllers
         // GET: Blogs
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Blogs.FromSql("Select * from dbo.Blogs").ToListAsync());
+            return View(await _context.Blogs.FromSql("Select * from dbo.Blog").ToListAsync());
+        }
+
+        public async Task<IActionResult> LatestBlogs()
+        {
+            //return View("Index", await _context.Blogs.FromSql("EXEC [dbo].[GetLatestBlogs]").ToListAsync());
+            var comparisonDateTime = DateTime.Now.AddMonths(-3);
+            
+            var results = await _context.Database
+                .ExecuteSqlQueryAsync(@"select b.Title as BlogTitle, p.* from
+                                        Post p join Blog b
+                                        on b.Id = p.BlogId");
+            while (results.DbDataReader.Read())
+            {
+                Console.Write($"Blog Title: '{results.DbDataReader["BlogTitle"]}', Post Title: '{results.DbDataReader["Title"]}'");
+            }
+
+            return View("Index", await _context.Blogs.FromSql("Select * from dbo.Blog")
+                                    .Where(x => x.CreatedAt >= comparisonDateTime)
+                                    .OrderByDescending(x => x.Id)
+                                    .Include(x => x.Posts)
+                                    .ToListAsync());
         }
 
         // GET: Blogs/Details/5
@@ -35,8 +58,11 @@ namespace MasteringEFCore.RawSql.Final.Controllers
                 return NotFound();
             }
 
-            var blog = await _context.Blogs
-                .SingleOrDefaultAsync(m => m.Id == id);
+            //var blog = await _context.Blogs
+            //    .SingleOrDefaultAsync(m => m.Id == id);
+
+            var blog = await _context.Blogs.FromSql("Select * from dbo.Blog WHERE Id = @id", 
+                            new SqlParameter("id", id)).FirstOrDefaultAsync();
             if (blog == null)
             {
                 return NotFound();
@@ -145,6 +171,29 @@ namespace MasteringEFCore.RawSql.Final.Controllers
             _context.Blogs.Remove(blog);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> GetBlogByTitle(string keyword)
+        {
+            if (keyword == null)
+            {
+                return NotFound();
+            }
+            var blog = await _context.Blogs
+                .FromSql("Select * from dbo.Blog WHERE Title like '%' + @keyword + '%'", 
+                    new SqlParameter("keyword", keyword)).FirstOrDefaultAsync();
+            if (blog == null)
+            {
+                return NotFound();
+            }
+            return View("Details", blog);
+        }
+
+        public async Task<IActionResult> BlogsByCategory(int categoryId)
+        {
+            return View("Index", await _context.Blogs
+                .FromSql("EXEC [dbo].[GetBlogsByCategory] @categoryId = @Id", 
+                new SqlParameter("id", categoryId)).ToListAsync());
         }
 
         private bool BlogExists(int id)
